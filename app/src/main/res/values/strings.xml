@@ -3,4 +3,8 @@
     <string name="title_home">Home</string>
     <string name="title_stats">Stats</string>
     <string name="title_settings">Settings</string>
+
+    <string name="text_fragment_home">Home fragment</string>
+    <string name="text_fragment_stats">Stats fragment</string>
+    <string name="text_fragment_settings">Settings fragment</string>
 </resources>
