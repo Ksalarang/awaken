@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Diyar/AndroidStudioProjects/awaken/app/src/main/res/drawable-anydpi/ic_home.xml" value="0.145" />
         <entry key="..\:/Users/Diyar/AndroidStudioProjects/awaken/app/src/main/res/layout/activity_main.xml" value="0.21666666666666667" />
         <entry key="..\:/Users/Diyar/AndroidStudioProjects/awaken/app/src/main/res/layout/fragment_home.xml" value="0.2234375" />
         <entry key="..\:/Users/Diyar/AndroidStudioProjects/awaken/app/src/main/res/layout/fragment_settings.xml" value="0.2234375" />
