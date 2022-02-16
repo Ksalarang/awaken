@@ -10,7 +10,11 @@
     <string name="text_fragment_stats">Stats fragment</string>
     <string name="text_fragment_settings">Settings fragment</string>
 
-    <!--  Image content descriptions  -->
+    <!--  Content descriptions  -->
     <string name="add_preset_fab_description">Add meditation preset button</string>
     <string name="preset_icon_description">Preset icon</string>
+
+    <!-- Dimens -->
+    <dimen name="item_view_margin">10dp</dimen>
+    <dimen name="preset_name_font_size">24sp</dimen>
 </resources>
