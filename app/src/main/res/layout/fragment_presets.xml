@@ -24,7 +24,7 @@
         android:layout_margin="16dp"
         android:layout_gravity="bottom|end"
         android:src="@drawable/ic_add"
-        android:contentDescription="@string/add_meditation_preset_fab_description"
+        android:contentDescription="@string/add_preset_fab_description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

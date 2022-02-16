@@ -10,5 +10,7 @@
     <string name="text_fragment_stats">Stats fragment</string>
     <string name="text_fragment_settings">Settings fragment</string>
 
-    <string name="add_meditation_preset_fab_description">Add meditation preset button</string>
+    <!--  Image content descriptions  -->
+    <string name="add_preset_fab_description">Add meditation preset button</string>
+    <string name="preset_icon_description">Preset icon</string>
 </resources>
