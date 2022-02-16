@@ -10,5 +10,5 @@
     <string name="text_fragment_stats">Stats fragment</string>
     <string name="text_fragment_settings">Settings fragment</string>
 
-    <string name="fab_add_meditation_preset_description">Add meditation preset button</string>
+    <string name="add_meditation_preset_fab_description">Add meditation preset button</string>
 </resources>
