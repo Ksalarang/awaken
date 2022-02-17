@@ -1,4 +1,4 @@
-package com.diyartaikenov.app.awaken.ui
+package com.diyartaikenov.app.awaken.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
