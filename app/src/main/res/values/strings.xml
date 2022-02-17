@@ -9,12 +9,20 @@
     <string name="text_fragment_presets">Presets fragment</string>
     <string name="text_fragment_stats">Stats fragment</string>
     <string name="text_fragment_settings">Settings fragment</string>
+    
+    <plurals name="duration_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
 
-    <!--  Content descriptions  -->
+    <!-- Content descriptions -->
     <string name="add_preset_fab_description">Add meditation preset button</string>
     <string name="preset_icon_description">Preset icon</string>
 
     <!-- Dimens -->
-    <dimen name="item_view_margin">10dp</dimen>
+    <dimen name="margin_between_views">10dp</dimen>
+    <dimen name="space_between_text">3sp</dimen>
+
+    <!-- Text sizes -->
     <dimen name="preset_name_font_size">24sp</dimen>
 </resources>
