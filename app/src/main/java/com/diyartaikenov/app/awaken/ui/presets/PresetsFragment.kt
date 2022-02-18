@@ -1,4 +1,4 @@
-package com.diyartaikenov.app.awaken.ui
+package com.diyartaikenov.app.awaken.ui.presets
 
 import androidx.fragment.app.Fragment
 import com.diyartaikenov.app.awaken.R
