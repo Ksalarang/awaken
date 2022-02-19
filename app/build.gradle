@@ -48,6 +48,7 @@ dependencies {
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"
