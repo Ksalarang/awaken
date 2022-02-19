@@ -6,13 +6,14 @@
 
     <string name="label_presets">Meditation presets</string>
 
-    <string name="text_fragment_presets">Presets fragment</string>
     <string name="text_fragment_stats">Stats fragment</string>
     <string name="text_fragment_settings">Settings fragment</string>
 
-    <!-- Add Preset Fragment -->
+    <!-- Add Preset Fragment Section -->
     <string name="preset_name">Meditation Name</string>
     <string name="label_duration">Duration (minutes):</string>
+    <string name="button_save">Save</string>
+    <string name="button_delete">Delete</string>
 
     <plurals name="duration_minutes">
         <item quantity="one">%d minute</item>
