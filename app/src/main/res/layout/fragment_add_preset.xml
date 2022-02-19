@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/preset_name"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -23,62 +24,70 @@
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/duration_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top"
-        android:text="@string/label_duration"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name_label"
-        tools:text="Duration (minutes):" />
-
-    <ImageView
-        android:id="@+id/subtract_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top"
-        android:layout_marginEnd="@dimen/margin_edge"
-        android:src="@drawable/ic_subtract"
-        app:layout_constraintEnd_toStartOf="@id/duration"
-        app:layout_constraintTop_toBottomOf="@id/name_label" />
-
-    <EditText
-        android:id="@+id/duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top"
-        android:layout_marginEnd="@dimen/margin_edge"
-        android:background="@null"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        android:maxLength="3"
-        android:selectAllOnFocus="true"
-        app:layout_constraintEnd_toStartOf="@id/add_icon"
-        app:layout_constraintTop_toBottomOf="@id/name_label"
-        tools:text="10" />
-
-    <ImageView
-        android:id="@+id/add_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top"
-        android:layout_marginEnd="@dimen/margin_edge"
-        android:src="@drawable/ic_add"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name_label" />
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/duration_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:paddingStart="@dimen/margin_edge"
+        android:paddingTop="@dimen/duration_layout_padding"
+        android:paddingEnd="@dimen/margin_edge"
+        android:paddingBottom="@dimen/duration_layout_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_label">
+
+        <TextView
+            android:id="@+id/duration_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_duration"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Duration (minutes):" />
+
+        <ImageView
+            android:id="@+id/subtract_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_edge"
+            android:src="@drawable/ic_subtract"
+            app:layout_constraintEnd_toStartOf="@id/duration"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_edge"
+            android:background="@null"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:maxLength="3"
+            android:selectAllOnFocus="true"
+            app:layout_constraintEnd_toStartOf="@id/add_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="20" />
+
+        <ImageView
+            android:id="@+id/add_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/duration_label"
-        app:layout_constraintVertical_bias="0.2"
-        >
+        app:layout_constraintTop_toBottomOf="@id/duration_layout"
+        app:layout_constraintVertical_bias="0.2">
 
         <Button
             android:id="@+id/button_delete_preset"
@@ -86,17 +95,14 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_edge"
             android:text="@string/button_delete"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/button_save_preset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_edge"
-            android:text="@string/button_save"
-            />
-
+            android:text="@string/button_save" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
