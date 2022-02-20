@@ -41,21 +41,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/duration_label"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="Duration (minutes):" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/subtract_duration_button"
+            style="@style/Awaken.Button.Circle"
             android:layout_width="@dimen/icon_button_size"
             android:layout_height="@dimen/icon_button_size"
             android:layout_marginEnd="@dimen/margin_edge"
             app:icon="@drawable/ic_subtract"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/duration"
-            style="@style/Awaken.Button.Circle" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/duration"
@@ -63,54 +63,26 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_edge"
             android:background="@null"
+            android:hint="@string/duration_text"
             android:importantForAutofill="no"
             android:inputType="number"
-            android:text="@string/duration_text"
-            android:hint="@string/duration_text"
             android:maxLength="3"
             android:selectAllOnFocus="true"
+            android:text="@string/duration_text"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/add_duration_button"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="10" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/add_duration_button"
+            style="@style/Awaken.Button.Circle"
             android:layout_width="@dimen/icon_button_size"
             android:layout_height="@dimen/icon_button_size"
             app:icon="@drawable/ic_add"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            style="@style/Awaken.Button.Circle" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/button_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/duration_layout"
-        app:layout_constraintVertical_bias="0.2">
-
-        <Button
-            android:id="@+id/delete_preset_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_edge"
-            android:text="@string/button_delete"
-            android:visibility="gone"
-            style="?android:attr/buttonBarButtonStyle" />
-
-        <Button
-            android:id="@+id/save_preset_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_edge"
-            android:text="@string/button_save" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
