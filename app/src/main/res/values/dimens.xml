@@ -9,7 +9,8 @@
     <dimen name="list_item_button_size">36dp</dimen>
 
     <!-- Add Preset Fragment -->
-    <dimen name="duration_layout_padding">32dp</dimen>
+    <dimen name="meditation_name_padding">16dp</dimen>
+    <dimen name="duration_layout_padding">24dp</dimen>
     <dimen name="icon_button_size">32dp</dimen>
 
     <!-- Text sizes -->
