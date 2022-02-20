@@ -21,7 +21,7 @@
         android:id="@+id/fab_add_meditation_preset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/margin_fab"
         android:layout_gravity="bottom|end"
         android:src="@drawable/ic_add"
         android:contentDescription="@string/add_preset_fab_description"
