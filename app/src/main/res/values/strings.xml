@@ -17,6 +17,8 @@
     <string name="button_save">Save</string>
     <string name="button_delete">Delete</string>
 
+    <string name="button_meditate">MEDITATE</string>
+
     <plurals name="duration_minutes">
         <item quantity="one">%d minute</item>
         <item quantity="other">%d minutes</item>
