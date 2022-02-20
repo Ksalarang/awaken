@@ -6,6 +6,7 @@
     <!-- Add preset Fragment -->
     <dimen name="margin_edge">12dp</dimen>
     <dimen name="duration_layout_padding">32dp</dimen>
+    <dimen name="icon_button_size">32dp</dimen>
 
     <!-- Text sizes -->
     <dimen name="preset_name_font_size">24sp</dimen>
