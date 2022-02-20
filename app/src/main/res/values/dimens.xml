@@ -3,6 +3,7 @@
     <!-- Presets Fragment -->
     <dimen name="margin_edge">12dp</dimen>
     <dimen name="margin_edge_small">6dp</dimen>
+    <dimen name="margin_fab">16dp</dimen>
 
     <!-- Preset List Item -->
     <dimen name="list_item_button_size">36dp</dimen>
