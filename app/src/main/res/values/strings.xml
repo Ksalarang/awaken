@@ -27,4 +27,5 @@
     <!-- Content descriptions -->
     <string name="add_preset_fab_description">Add meditation preset button</string>
     <string name="preset_icon_description">Preset icon</string>
+    <string name="save_preset_fab_description">Save meditation preset</string>
 </resources>
