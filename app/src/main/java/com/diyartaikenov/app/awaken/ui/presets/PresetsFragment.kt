@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.diyartaikenov.app.awaken.BaseApplication
+import com.diyartaikenov.app.awaken.MainActivity
 import com.diyartaikenov.app.awaken.R
 import com.diyartaikenov.app.awaken.databinding.FragmentPresetsBinding
 import com.diyartaikenov.app.awaken.model.MeditationPreset
@@ -26,6 +27,7 @@ class PresetsFragment: Fragment() {
     }
 
     private lateinit var binding: FragmentPresetsBinding
+    private lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,10 +41,18 @@ class PresetsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mainActivity = requireActivity() as MainActivity
+
         binding.fabAddMeditationPreset.setOnClickListener {
+            mainActivity.setBottomNavigationVisibility(View.GONE)
             findNavController().navigate(
                 R.id.action_nav_presets_to_nav_add_preset_fragment
             )
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainActivity.setBottomNavigationVisibility(View.VISIBLE)
     }
 }
