@@ -37,4 +37,12 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
+
+    /**
+     * This method is called from this activity's fragments to hide and show
+     * bottom navigation view during navigation between those fragments.
+     */
+    fun setBottomNavigationVisibility(visibility: Int) {
+        binding.bottomNavView.visibility = visibility
+    }
 }
