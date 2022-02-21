@@ -11,7 +11,7 @@ import com.diyartaikenov.app.awaken.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 /**
- * A Main activity that hosts all Fragments for this app and the nav controller.
+ * A Main activity that hosts all Fragments for this app and hosts the nav controller.
  */
 class MainActivity : AppCompatActivity() {
 
