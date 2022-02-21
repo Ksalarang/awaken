@@ -10,10 +10,8 @@ import com.diyartaikenov.app.awaken.model.MeditationPreset
  * Shared [ViewModel] to provide data to the [PresetsFragment]
  * and allow for interaction with the [MeditationPresetDao]
  */
-class PresetViewModel(
-    private val presetDao: MeditationPresetDao
-    ): ViewModel() {
+class PresetViewModel(private val presetDao: MeditationPresetDao): ViewModel() {
 
-        val presets: LiveData<List<MeditationPreset>> =
-            presetDao.getMeditationPresets().asLiveData()
+    val presets: LiveData<List<MeditationPreset>> =
+        presetDao.getMeditationPresets().asLiveData()
 }
