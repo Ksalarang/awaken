@@ -25,6 +25,10 @@
             app:destination="@id/nav_presets"
             app:popUpTo="@id/nav_presets"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="id"
+            app:argType="long"
+            android:defaultValue="0L" />
     </fragment>
 
     <fragment
