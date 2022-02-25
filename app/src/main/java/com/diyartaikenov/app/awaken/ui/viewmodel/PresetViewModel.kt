@@ -24,4 +24,10 @@ class PresetViewModel(private val presetDao: MeditationPresetDao): ViewModel() {
             presetDao.insert(preset)
         }
     }
+
+    fun deletePreset(preset: MeditationPreset) {
+        viewModelScope.launch {
+            presetDao.delete(preset)
+        }
+    }
 }
