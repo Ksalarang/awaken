@@ -12,6 +12,7 @@ import com.diyartaikenov.app.awaken.MainActivity
 import com.diyartaikenov.app.awaken.R
 import com.diyartaikenov.app.awaken.databinding.FragmentPresetsBinding
 import com.diyartaikenov.app.awaken.model.MeditationPreset
+import com.diyartaikenov.app.awaken.ui.adapter.PresetListAdapter
 import com.diyartaikenov.app.awaken.ui.viewmodel.PresetViewModel
 import com.diyartaikenov.app.awaken.ui.viewmodel.PresetViewModelFactory
 
@@ -44,11 +45,33 @@ class PresetsFragment: Fragment() {
 
         mainActivity = requireActivity() as MainActivity
 
-        binding.fabAddMeditationPreset.setOnClickListener {
-            mainActivity.setBottomNavigationVisibility(View.GONE)
-            findNavController().navigate(
-                R.id.action_nav_presets_to_nav_add_preset_fragment
-            )
+        val adapter = PresetListAdapter(
+            { preset ->
+                // todo: start meditation
+            },
+            { preset ->
+                findNavController().navigate(
+                    PresetsFragmentDirections.actionNavPresetsToNavAddPresetFragment(preset.id)
+                )
+            },
+            { preset ->
+                // viewModel.deletePreset(preset)
+            }
+        )
+
+        viewModel.presets.observe(viewLifecycleOwner) { presets ->
+            adapter.submitList(presets)
+        }
+
+        binding.apply {
+            recyclerView.adapter = adapter
+            fabAddMeditationPreset.setOnClickListener {
+                mainActivity.setBottomNavigationVisibility(View.GONE)
+
+                findNavController().navigate(
+                    R.id.action_nav_presets_to_nav_add_preset_fragment
+                )
+            }
         }
     }
 
