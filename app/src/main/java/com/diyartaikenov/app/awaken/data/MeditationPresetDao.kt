@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MeditationPresetDao {
     @Query("select * from meditation_preset_db")
-    fun getMeditationPresets(): Flow<List<MeditationPreset>>
+    fun getPresets(): Flow<List<MeditationPreset>>
 
     @Query("select * from meditation_preset_db where id = :id")
-    fun getMeditationPreset(id: Long): Flow<MeditationPreset>
+    fun getPreset(id: Long): Flow<MeditationPreset>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(meditationPreset: MeditationPreset)
