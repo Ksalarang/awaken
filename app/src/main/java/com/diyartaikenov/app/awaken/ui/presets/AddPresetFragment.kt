@@ -1,7 +1,6 @@
 package com.diyartaikenov.app.awaken.ui.presets
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,8 +29,9 @@ class AddPresetFragment : Fragment() {
         )
     }
 
-    private lateinit var binding: FragmentAddPresetBinding
     private val navArgs: AddPresetFragmentArgs by navArgs()
+
+    private lateinit var binding: FragmentAddPresetBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,12 +47,22 @@ class AddPresetFragment : Fragment() {
         val presetId = navArgs.id
 
         if (presetId > 0) {
-            // Todo: update a preset in the database
-        } else {
+            viewModel.getPresetById(presetId).observe(viewLifecycleOwner) { preset ->
+                bindPreset(preset)
+            }
+
+            // Update an existing preset
             binding.fabSavePreset.setOnClickListener {
-                val presetName = binding.nameInput.text.toString()
-                if (validatePresetName(presetName)) {
-                    viewModel.addPreset(presetName, binding.duration.text.toString().toInt())
+                if (validatePresetName(nameInput())) {
+                    viewModel.updatePreset(presetId, nameInput(), durationInput())
+                    findNavController().navigate(R.id.action_nav_add_preset_to_nav_presets)
+                }
+            }
+        } else {
+            // Save a new preset
+            binding.fabSavePreset.setOnClickListener {
+                if (validatePresetName(nameInput())) {
+                    viewModel.addPreset(nameInput(), durationInput())
                     findNavController().navigate(R.id.action_nav_add_preset_to_nav_presets)
                 }
             }
@@ -63,14 +73,14 @@ class AddPresetFragment : Fragment() {
 
             // subtract 5 from the duration editText value
             subtractDurationButton.setOnClickListener {
-                val value = duration.text.toString().toInt() - 5
+                val value = durationInput() - 5
                 if (value > 0) {
                     duration.setText(value.toString())
                 }
             }
             // add 5 to the duration editText value
             addDurationButton.setOnClickListener {
-                val value = duration.text.toString().toInt() + 5
+                val value = durationInput() + 5
                 if (value < 1000) {
                     duration.setText(value.toString())
                 }
@@ -91,6 +101,19 @@ class AddPresetFragment : Fragment() {
             true
         }
     }
+
+    /**
+     * Fill in all the fields with a preset data.
+     */
+    private fun bindPreset(preset: MeditationPreset) {
+        binding.apply {
+            nameInput.setText(preset.name)
+            duration.setText(preset.durationInMinutes.toString())
+        }
+    }
+
+    private fun nameInput() = binding.nameInput.text.toString()
+    private fun durationInput() = binding.duration.text.toString().toInt()
 
     /**
      * Add an after text changed listener to this EditText which ensures that the value

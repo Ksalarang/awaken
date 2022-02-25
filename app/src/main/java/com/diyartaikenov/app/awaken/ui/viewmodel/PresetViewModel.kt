@@ -29,15 +29,20 @@ class PresetViewModel(private val presetDao: MeditationPresetDao): ViewModel() {
         }
     }
 
-    fun deletePreset(preset: MeditationPreset) {
+    fun updatePreset(id: Long, presetName: String, duration: Int) {
+        val preset = MeditationPreset(
+            id = id,
+            name = presetName,
+            durationInMinutes = duration
+        )
         viewModelScope.launch {
-            presetDao.delete(preset)
+            presetDao.update(preset)
         }
     }
 
-    fun updatePreset(preset: MeditationPreset) {
+    fun deletePreset(preset: MeditationPreset) {
         viewModelScope.launch {
-            presetDao.update(preset)
+            presetDao.delete(preset)
         }
     }
 }
