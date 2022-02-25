@@ -16,7 +16,11 @@ import kotlinx.coroutines.launch
 class PresetViewModel(private val presetDao: MeditationPresetDao): ViewModel() {
 
     val presets: LiveData<List<MeditationPreset>> =
-        presetDao.getMeditationPresets().asLiveData()
+        presetDao.getPresets().asLiveData()
+
+    fun getPresetById(id: Long): LiveData<MeditationPreset> {
+        return presetDao.getPreset(id).asLiveData()
+    }
 
     fun addPreset(name: String, duration: Int) {
         val preset = MeditationPreset(name = name, durationInMinutes = duration)
@@ -28,6 +32,12 @@ class PresetViewModel(private val presetDao: MeditationPresetDao): ViewModel() {
     fun deletePreset(preset: MeditationPreset) {
         viewModelScope.launch {
             presetDao.delete(preset)
+        }
+    }
+
+    fun updatePreset(preset: MeditationPreset) {
+        viewModelScope.launch {
+            presetDao.update(preset)
         }
     }
 }
