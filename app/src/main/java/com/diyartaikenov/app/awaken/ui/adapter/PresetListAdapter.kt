@@ -12,7 +12,9 @@ import com.diyartaikenov.app.awaken.model.MeditationPreset
  * ListAdapter for the [MeditationPreset]s retrieved from the database.
  */
 class PresetListAdapter(
-    private val clickListener: (MeditationPreset) -> Unit
+    private val startSessionClickListener: (MeditationPreset) -> Unit,
+    private val editPresetClickListener: (MeditationPreset) -> Unit,
+    private val deletePresetClickListener: (MeditationPreset) -> Unit
 ): ListAdapter<MeditationPreset, PresetListAdapter.PresetViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PresetViewHolder {
@@ -24,7 +26,9 @@ class PresetListAdapter(
 
     override fun onBindViewHolder(holder: PresetViewHolder, position: Int) {
         val preset = getItem(position)
-        holder.itemView.setOnClickListener { clickListener(preset) }
+        holder.setStartSessionClickListener(preset) { startSessionClickListener(preset) }
+        holder.setEditPresetClickListener(preset) { editPresetClickListener(preset) }
+        holder.setDeletePresetClickListener(preset) { deletePresetClickListener(preset) }
         holder.bind(preset)
     }
 
@@ -35,6 +39,25 @@ class PresetListAdapter(
         fun bind(preset: MeditationPreset) {
             binding.preset = preset
             binding.executePendingBindings()
+        }
+
+        fun setStartSessionClickListener(
+            preset: MeditationPreset,
+            clickListener: (MeditationPreset) -> Unit) {
+            itemView.setOnClickListener { clickListener(preset) }
+            binding.meditate.setOnClickListener { clickListener(preset) }
+        }
+
+        fun setEditPresetClickListener(
+            preset: MeditationPreset,
+            clickListener: (MeditationPreset) -> Unit) {
+            binding.editPresetButton.setOnClickListener { clickListener(preset) }
+        }
+
+        fun setDeletePresetClickListener(
+            preset: MeditationPreset,
+            clickListener: (MeditationPreset) -> Unit) {
+            binding.deletePresetButton.setOnClickListener { clickListener(preset) }
         }
     }
 
