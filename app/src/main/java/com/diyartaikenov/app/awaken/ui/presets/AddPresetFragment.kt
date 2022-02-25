@@ -58,6 +58,21 @@ class AddPresetFragment : Fragment(R.layout.fragment_add_preset) {
             }
 
             duration.addAfterTextChangedListener()
+
+            // subtract 5 from the duration editText value
+            subtractDurationButton.setOnClickListener {
+                val value = duration.text.toString().toInt() - 5
+                if (value > 0) {
+                    duration.setText(value.toString())
+                }
+            }
+            // add 5 to the duration editText value
+            addDurationButton.setOnClickListener {
+                val value = duration.text.toString().toInt() + 5
+                if (value < 1000) {
+                    duration.setText(value.toString())
+                }
+            }
         }
     }
 
