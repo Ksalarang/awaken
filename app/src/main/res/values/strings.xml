@@ -10,7 +10,7 @@
     <string name="text_fragment_stats">Oops! Stats haven\'t been set up yet.</string>
     <string name="text_fragment_settings">Settings are gonna be here, someday…</string>
 
-    <!-- Add Preset Fragment -->
+    <!-- Add preset fragment -->
     <string name="preset_name">Meditation Name</string>
     <string name="name_input_error_message">This field cannot be empty</string>
     <string name="duration_label">Duration (minutes):</string>
@@ -18,12 +18,9 @@
     <string name="button_save">Save</string>
     <string name="button_delete">Delete</string>
 
+    <!-- Preset list item -->
     <string name="button_meditate">MEDITATE</string>
-
-    <plurals name="duration_minutes">
-        <item quantity="one">%d minute</item>
-        <item quantity="other">%d minutes</item>
-    </plurals>
+    <string name="duration">%d min</string>
 
     <!-- Content descriptions -->
     <string name="add_preset_fab_description">Add meditation preset button</string>
