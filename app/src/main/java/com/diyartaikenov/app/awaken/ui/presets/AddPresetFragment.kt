@@ -9,6 +9,7 @@ import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.diyartaikenov.app.awaken.BaseApplication
 import com.diyartaikenov.app.awaken.R
 import com.diyartaikenov.app.awaken.databinding.FragmentAddPresetBinding
@@ -49,6 +50,10 @@ class AddPresetFragment : Fragment(R.layout.fragment_add_preset) {
                     nameInputLayout.error = getString(R.string.name_input_error_message)
                 } else {
                     nameInputLayout.error = null
+                    viewModel.addPreset(meditationName, duration.text.toString().toInt())
+                    findNavController().navigate(
+                        R.id.action_nav_add_preset_to_nav_presets
+                    )
                 }
             }
 
