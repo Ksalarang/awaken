@@ -8,6 +8,7 @@
     android:background="@color/gainsboro"
     android:paddingTop="@dimen/margin_edge_small"
     android:paddingBottom="@dimen/margin_edge_small"
+    android:clipToPadding="false"
     tools:context=".ui.presets.PresetsFragment">
 
     <androidx.recyclerview.widget.RecyclerView

@@ -17,6 +17,7 @@
         android:layout_marginTop="@dimen/margin_edge_small"
         android:layout_marginBottom="@dimen/margin_edge_small"
         android:background="@color/white"
+        android:elevation="4dp"
         android:padding="@dimen/margin_edge">
 
         <TextView
