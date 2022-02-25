@@ -8,4 +8,5 @@
     <color name="amber_600_dark">#ffc68400</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
+    <color name="gainsboro">#ffdcdcdc</color>
 </resources>

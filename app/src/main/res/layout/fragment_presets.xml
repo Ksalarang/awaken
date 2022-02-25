@@ -5,6 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gainsboro"
+    android:paddingTop="@dimen/margin_edge_small"
+    android:paddingBottom="@dimen/margin_edge_small"
     tools:context=".ui.presets.PresetsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
