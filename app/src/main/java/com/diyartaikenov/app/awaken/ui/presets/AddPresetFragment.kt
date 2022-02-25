@@ -1,7 +1,7 @@
 package com.diyartaikenov.app.awaken.ui.presets
 
 import android.os.Bundle
-import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +10,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.diyartaikenov.app.awaken.BaseApplication
 import com.diyartaikenov.app.awaken.R
 import com.diyartaikenov.app.awaken.databinding.FragmentAddPresetBinding
@@ -21,7 +22,7 @@ import com.diyartaikenov.app.awaken.ui.viewmodel.PresetViewModelFactory
  * A [Fragment] to enter data for a new [MeditationPreset] or to edit data for
  * an existing [MeditationPreset].
  */
-class AddPresetFragment : Fragment(R.layout.fragment_add_preset) {
+class AddPresetFragment : Fragment() {
 
     private val viewModel: PresetViewModel by activityViewModels {
         PresetViewModelFactory(
@@ -30,6 +31,7 @@ class AddPresetFragment : Fragment(R.layout.fragment_add_preset) {
     }
 
     private lateinit var binding: FragmentAddPresetBinding
+    private val navArgs: AddPresetFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,21 +44,21 @@ class AddPresetFragment : Fragment(R.layout.fragment_add_preset) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val presetId = navArgs.id
 
-        binding.apply {
-            fabSavePreset.setOnClickListener {
-                val meditationName = nameInput.text.toString()
-                if (meditationName.isEmpty()) {
-                    nameInputLayout.error = getString(R.string.name_input_error_message)
-                } else {
-                    nameInputLayout.error = null
-                    viewModel.addPreset(meditationName, duration.text.toString().toInt())
-                    findNavController().navigate(
-                        R.id.action_nav_add_preset_to_nav_presets
-                    )
+        if (presetId > 0) {
+            // Todo: update a preset in the database
+        } else {
+            binding.fabSavePreset.setOnClickListener {
+                val presetName = binding.nameInput.text.toString()
+                if (validatePresetName(presetName)) {
+                    viewModel.addPreset(presetName, binding.duration.text.toString().toInt())
+                    findNavController().navigate(R.id.action_nav_add_preset_to_nav_presets)
                 }
             }
+        }
 
+        binding.apply {
             duration.addAfterTextChangedListener()
 
             // subtract 5 from the duration editText value
@@ -73,6 +75,20 @@ class AddPresetFragment : Fragment(R.layout.fragment_add_preset) {
                     duration.setText(value.toString())
                 }
             }
+        }
+    }
+
+    /**
+     * Show a [TextInputLayout] error and return false if the preset name is blank,
+     * hide the error and return true otherwise.
+     */
+    private fun validatePresetName(presetName: String): Boolean {
+        return if (presetName.isBlank()) {
+            binding.nameInputLayout.error = getString(R.string.name_input_error_message)
+            false
+        } else {
+            binding.nameInputLayout.error = null
+            true
         }
     }
 
