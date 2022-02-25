@@ -47,15 +47,17 @@ class PresetsFragment: Fragment() {
 
         val adapter = PresetListAdapter(
             { preset ->
-                // TODO: start meditation session
+                // TODO: Start meditation session click listener
             },
             { preset ->
+                // Edit preset click listener
                 findNavController().navigate(
                     PresetsFragmentDirections.actionNavPresetsToNavAddPreset(preset.id)
                 )
             },
             { preset ->
-                 viewModel.deletePreset(preset)
+                // Delete preset click listener
+                viewModel.deletePreset(preset)
             }
         )
 
