@@ -51,6 +51,7 @@ class PresetsFragment: Fragment() {
             },
             { preset ->
                 // Edit preset click listener
+                mainActivity.setBottomNavigationVisibility(View.GONE)
                 findNavController().navigate(
                     PresetsFragmentDirections.actionNavPresetsToNavAddPreset(preset.id)
                 )
