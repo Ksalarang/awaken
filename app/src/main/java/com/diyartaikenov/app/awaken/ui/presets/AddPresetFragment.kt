@@ -46,26 +46,28 @@ class AddPresetFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val presetId = navArgs.id
 
+        // Edit an existing preset
         if (presetId > 0) {
             viewModel.getPresetById(presetId).observe(viewLifecycleOwner) { preset ->
                 bindPreset(preset)
             }
 
-            // Update an existing preset
             binding.fabSavePreset.setOnClickListener {
                 if (validatePresetName(nameInput())) {
                     viewModel.updatePreset(presetId, nameInput(), durationInput())
                     findNavController().navigate(R.id.action_nav_add_preset_to_nav_presets)
                 }
             }
-        } else {
-            // Save a new preset
+        }
+        // Save a new preset
+        else {
             binding.fabSavePreset.setOnClickListener {
                 if (validatePresetName(nameInput())) {
                     viewModel.addPreset(nameInput(), durationInput())
                     findNavController().navigate(R.id.action_nav_add_preset_to_nav_presets)
                 }
             }
+            setDefaultName()
         }
 
         binding.apply {
@@ -110,6 +112,14 @@ class AddPresetFragment : Fragment() {
             nameInput.setText(preset.name)
             duration.setText(preset.durationInMinutes.toString())
         }
+    }
+
+    /**
+     * Provide a default name for a new meditation preset
+     */
+    private fun setDefaultName() {
+        val presetAmount = viewModel.presets.value?.size ?: 0
+        binding.nameInput.setText(getString(R.string.meditation_name, presetAmount + 1))
     }
 
     private fun nameInput() = binding.nameInput.text.toString()

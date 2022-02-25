@@ -17,6 +17,7 @@
     <string name="duration_text" translatable="false">10</string>
     <string name="button_save">Save</string>
     <string name="button_delete">Delete</string>
+    <string name="meditation_name">Meditation %d</string>
 
     <!-- Preset list item -->
     <string name="button_meditate">MEDITATE</string>
