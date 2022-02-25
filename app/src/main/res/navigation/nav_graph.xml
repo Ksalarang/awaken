@@ -11,17 +11,17 @@
         android:label="@string/label_presets"
         tools:layout="@layout/fragment_presets" >
         <action
-            android:id="@+id/action_nav_presets_to_nav_add_preset_fragment"
-            app:destination="@id/nav_add_preset_fragment" />
+            android:id="@+id/action_nav_presets_to_nav_add_preset"
+            app:destination="@id/nav_add_preset" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_add_preset_fragment"
+        android:id="@+id/nav_add_preset"
         android:name="com.diyartaikenov.app.awaken.ui.presets.AddPresetFragment"
         android:label="@string/label_add_preset"
         tools:layout="@layout/fragment_add_preset" >
         <action
-            android:id="@+id/action_nav_add_preset_fragment_to_nav_presets"
+            android:id="@+id/action_nav_add_preset_to_nav_presets"
             app:destination="@id/nav_presets"
             app:popUpTo="@id/nav_presets"
             app:popUpToInclusive="true" />

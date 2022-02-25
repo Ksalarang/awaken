@@ -51,7 +51,7 @@ class PresetsFragment: Fragment() {
             },
             { preset ->
                 findNavController().navigate(
-                    PresetsFragmentDirections.actionNavPresetsToNavAddPresetFragment(preset.id)
+                    PresetsFragmentDirections.actionNavPresetsToNavAddPreset(preset.id)
                 )
             },
             { preset ->
@@ -69,7 +69,7 @@ class PresetsFragment: Fragment() {
                 mainActivity.setBottomNavigationVisibility(View.GONE)
 
                 findNavController().navigate(
-                    R.id.action_nav_presets_to_nav_add_preset_fragment
+                    R.id.action_nav_presets_to_nav_add_preset
                 )
             }
         }
