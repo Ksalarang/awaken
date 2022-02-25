@@ -47,7 +47,7 @@ class PresetsFragment: Fragment() {
 
         val adapter = PresetListAdapter(
             { preset ->
-                // todo: start meditation
+                // TODO: start meditation session
             },
             { preset ->
                 findNavController().navigate(
@@ -55,7 +55,7 @@ class PresetsFragment: Fragment() {
                 )
             },
             { preset ->
-                // viewModel.deletePreset(preset)
+                 viewModel.deletePreset(preset)
             }
         )
 
