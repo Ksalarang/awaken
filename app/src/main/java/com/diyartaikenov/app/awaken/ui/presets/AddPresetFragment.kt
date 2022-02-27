@@ -71,8 +71,11 @@ class AddPresetFragment : Fragment() {
                 }
             }
             setDefaultName()
+            binding.nameInput.requestFocus()
+            requireActivity().showSoftInput(binding.nameInput)
         }
 
+        // various listeners for duration edit text and its buttons
         binding.apply {
             duration.addAfterTextChangedListener()
 
@@ -90,9 +93,6 @@ class AddPresetFragment : Fragment() {
                     duration.setText(value.toString())
                 }
             }
-
-            nameInput.requestFocus()
-            requireActivity().showSoftInput(nameInput)
         }
     }
 
