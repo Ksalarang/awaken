@@ -1,9 +1,12 @@
 package com.diyartaikenov.app.awaken.ui.presets
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -87,6 +90,9 @@ class AddPresetFragment : Fragment() {
                     duration.setText(value.toString())
                 }
             }
+
+            nameInput.requestFocus()
+            requireActivity().showSoftInput(nameInput)
         }
     }
 
@@ -137,5 +143,10 @@ class AddPresetFragment : Fragment() {
                 this.selectAll()
             }
         }
+    }
+
+    private fun Activity.showSoftInput(view: View) {
+        (this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+            .showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
     }
 }
