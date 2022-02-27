@@ -16,7 +16,7 @@
         android:layout_marginEnd="@dimen/margin_edge"
         android:layout_marginTop="@dimen/margin_edge_small"
         android:layout_marginBottom="@dimen/margin_edge_small"
-        android:background="@color/white"
+        android:background="@drawable/ripple_effect"
         android:elevation="4dp"
         android:padding="@dimen/margin_edge">
 
@@ -71,7 +71,7 @@
             android:clickable="true"
             android:focusable="true"
             android:text="@string/button_meditate"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="?attr/colorSecondary"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
