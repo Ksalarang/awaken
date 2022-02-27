@@ -11,14 +11,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="130dp"
         android:layout_marginStart="@dimen/margin_edge"
         android:layout_marginEnd="@dimen/margin_edge"
         android:layout_marginTop="@dimen/margin_edge_small"
         android:layout_marginBottom="@dimen/margin_edge_small"
         android:background="@drawable/ripple_effect"
         android:elevation="4dp"
-        android:padding="@dimen/margin_edge">
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/name"
@@ -68,11 +68,13 @@
             android:id="@+id/meditate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
             android:text="@string/button_meditate"
             android:textColor="?attr/colorSecondary"
             android:textSize="16sp"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
