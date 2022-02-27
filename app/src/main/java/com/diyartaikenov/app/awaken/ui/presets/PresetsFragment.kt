@@ -70,10 +70,7 @@ class PresetsFragment: Fragment() {
             recyclerView.adapter = adapter
             fabAddMeditationPreset.setOnClickListener {
                 mainActivity.setBottomNavigationVisibility(View.GONE)
-
-                findNavController().navigate(
-                    R.id.action_nav_presets_to_nav_add_preset
-                )
+                findNavController().navigate(R.id.action_nav_presets_to_nav_add_preset)
             }
         }
     }
