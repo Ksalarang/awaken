@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * Meditation Preset entity to be stored in meditation_preset_db.
+ * Meditation Preset entity to be stored in app_database.
  */
 @Entity(tableName = "presets")
 data class MeditationPreset(
