@@ -10,7 +10,7 @@ import com.diyartaikenov.app.awaken.model.MeditationPreset
  * A Room database to persist data for this app.
  * This database stores a [MeditationPreset] entity.
  */
-@Database(entities = [MeditationPreset::class], version = 1, exportSchema = false)
+@Database(entities = [MeditationPreset::class], version = 2, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun meditationPresetDao(): MeditationPresetDao
 
