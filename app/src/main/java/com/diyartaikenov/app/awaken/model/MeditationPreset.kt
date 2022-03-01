@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 /**
  * Meditation Preset entity to be stored in meditation_preset_db.
  */
-@Entity(tableName = "meditation_preset_db")
+@Entity(tableName = "app_database")
 data class MeditationPreset(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
