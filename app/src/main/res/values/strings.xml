@@ -9,6 +9,7 @@
 
     <string name="text_fragment_stats">Oops! Stats haven\'t been set up yet.</string>
     <string name="text_fragment_settings">Settings are gonna be here, someday…</string>
+    <string name="dummy_content">Meditating</string>
 
     <!-- Add preset fragment -->
     <string name="preset_name">Meditation Name</string>
