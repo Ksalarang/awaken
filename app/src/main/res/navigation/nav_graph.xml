@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_nav_presets_to_nav_add_preset"
             app:destination="@id/nav_add_preset" />
+        <action
+            android:id="@+id/action_nav_presets_to_nav_session"
+            app:destination="@id/nav_session" />
     </fragment>
 
     <fragment
@@ -30,6 +33,12 @@
             app:argType="long"
             android:defaultValue="0L" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_session"
+        android:name="com.diyartaikenov.app.awaken.ui.presets.SessionFragment"
+        android:label="fragment_session"
+        tools:layout="@layout/fragment_session" />
 
     <fragment
         android:id="@+id/nav_stats"
