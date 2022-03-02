@@ -4,15 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import com.diyartaikenov.app.awaken.BaseApplication
 import com.diyartaikenov.app.awaken.databinding.FragmentSessionBinding
-import com.diyartaikenov.app.awaken.ui.viewmodel.PresetViewModel
-import com.diyartaikenov.app.awaken.ui.viewmodel.PresetViewModelFactory
 
 class SessionFragment: Fragment() {
 
@@ -32,27 +29,34 @@ class SessionFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         windowInsetsController =
             ViewCompat.getWindowInsetsController(requireActivity().window.decorView)
-        hideSystemBars()
+
+        hideAllBars()
     }
 
     override fun onDestroyView() {
-        showSystemBars()
+        showAllBars()
+        windowInsetsController = null
         _binding = null
         super.onDestroyView()
     }
 
-    private fun hideSystemBars() {
+    private fun hideAllBars() {
         // Configure the behavior of the hidden system bars
         windowInsetsController?.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         // Hide both the status bar and the navigation bar
         windowInsetsController?.hide(WindowInsetsCompat.Type.systemBars())
+        // Hide the action bar
+        (activity as AppCompatActivity).supportActionBar?.hide()
     }
 
-    private fun showSystemBars() {
+    private fun showAllBars() {
         // Show all the system bars
         windowInsetsController?.show(WindowInsetsCompat.Type.systemBars())
+        // Show the action bar
+        (activity as AppCompatActivity).supportActionBar?.show()
     }
 }
