@@ -4,9 +4,11 @@
     <string name="title_stats">Statistics</string>
     <string name="title_settings">Settings</string>
 
+    <!-- Fragments' labels -->
     <string name="label_presets">Meditation presets</string>
     <string name="label_add_preset">Add preset</string>
 
+    <!-- Dummy labels -->
     <string name="text_fragment_stats">Oops! Stats haven\'t been set up yet.</string>
     <string name="text_fragment_settings">Settings are gonna be here, someday…</string>
     <string name="dummy_content">Meditating</string>
@@ -28,4 +30,8 @@
     <string name="add_preset_fab_description">Add meditation preset button</string>
     <string name="preset_icon_description">Preset icon</string>
     <string name="save_preset_fab_description">Save meditation preset</string>
+    <string name="pause_or_continue_fab_description">Pause or continue meditation</string>
+
+    <!-- Session fragment -->
+    <string name="colon_divider" translatable="false">:</string>
 </resources>

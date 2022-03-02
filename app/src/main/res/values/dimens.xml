@@ -16,4 +16,5 @@
     <!-- Text sizes -->
     <dimen name="preset_name_font_size">20sp</dimen>
     <dimen name="space_between_text">3sp</dimen>
+    <dimen name="timer_text_size">80sp</dimen>
 </resources>
