@@ -47,17 +47,19 @@ class PresetsFragment: Fragment() {
 
         val adapter = PresetListAdapter(
             { preset ->
-                // TODO: Start meditation session click listener
+                // A click listener to open the session fragment
+                mainActivity.setBottomNavigationVisibility(View.GONE)
+                findNavController().navigate(R.id.action_nav_presets_to_nav_session)
             },
             { preset ->
-                // Edit preset click listener
+                // A click listener to edit the preset
                 mainActivity.setBottomNavigationVisibility(View.GONE)
                 findNavController().navigate(
                     PresetsFragmentDirections.actionNavPresetsToNavAddPreset(preset.id)
                 )
             },
             { preset ->
-                // Delete preset click listener
+                // A click listener to delete the preset
                 viewModel.deletePreset(preset)
             }
         )
