@@ -43,6 +43,9 @@ class SessionFragment: Fragment() {
         super.onDestroyView()
     }
 
+    /**
+     * Hide all the system bars and the action bar
+     */
     private fun hideAllBars() {
         // Configure the behavior of the hidden system bars
         windowInsetsController?.systemBarsBehavior =
@@ -53,6 +56,9 @@ class SessionFragment: Fragment() {
         (activity as AppCompatActivity).supportActionBar?.hide()
     }
 
+    /**
+     * Show all the system bars and the navigation bar.
+     */
     private fun showAllBars() {
         // Show all the system bars
         windowInsetsController?.show(WindowInsetsCompat.Type.systemBars())
