@@ -19,6 +19,8 @@ class SessionFragment: Fragment() {
     private var _binding: FragmentSessionBinding? = null
     private val binding get() = _binding!!
 
+    private var windowInsetsController: WindowInsetsControllerCompat? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,24 +32,27 @@ class SessionFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        windowInsetsController =
+            ViewCompat.getWindowInsetsController(requireActivity().window.decorView)
+        hideSystemBars()
     }
 
     override fun onDestroyView() {
+        showSystemBars()
         _binding = null
         super.onDestroyView()
     }
 
     private fun hideSystemBars() {
-        val windowInsetsController =
-            ViewCompat.getWindowInsetsController(requireActivity().window.decorView) ?: return
-        // Configure the behavior of the hidden system bars.
-        windowInsetsController.systemBarsBehavior =
+        // Configure the behavior of the hidden system bars
+        windowInsetsController?.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        // Hide both the status bar and the navigation bar.
-        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+        // Hide both the status bar and the navigation bar
+        windowInsetsController?.hide(WindowInsetsCompat.Type.systemBars())
     }
 
     private fun showSystemBars() {
-
+        // Show all the system bars
+        windowInsetsController?.show(WindowInsetsCompat.Type.systemBars())
     }
 }
