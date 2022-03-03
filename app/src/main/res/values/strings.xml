@@ -34,4 +34,6 @@
 
     <!-- Session fragment -->
     <string name="colon_divider" translatable="false">:</string>
+    <string name="_10">10</string>
+    <string name="_00">00</string>
 </resources>
