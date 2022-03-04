@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
+        <item name="windowActionBarOverlay">true</item>
     </style>
 
     <style name="Awaken.Button.Circle" parent="Widget.Material3.Button.Icon">
