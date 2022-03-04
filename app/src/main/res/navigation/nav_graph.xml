@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_presets" >
         <action
             android:id="@+id/action_nav_presets_to_nav_add_preset"
-            app:destination="@id/nav_add_preset" />
+            app:destination="@id/nav_add_preset"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_nav_presets_to_nav_session"
             app:destination="@id/nav_session" />
