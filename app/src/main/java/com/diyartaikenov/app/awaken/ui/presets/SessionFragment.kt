@@ -11,6 +11,9 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import com.diyartaikenov.app.awaken.databinding.FragmentSessionBinding
 
+/**
+ * This fragment is showed during a meditation session.
+ */
 class SessionFragment: Fragment() {
 
     private var _binding: FragmentSessionBinding? = null
@@ -33,36 +36,33 @@ class SessionFragment: Fragment() {
         windowInsetsController =
             ViewCompat.getWindowInsetsController(requireActivity().window.decorView)
 
-        hideAllBars()
+        (activity as AppCompatActivity).supportActionBar?.hide()
     }
 
     override fun onDestroyView() {
-        showAllBars()
+        (activity as AppCompatActivity).supportActionBar?.show()
         windowInsetsController = null
         _binding = null
         super.onDestroyView()
     }
 
     /**
-     * Hide all the system bars and the action bar
+     * Hide the status and navigation bars.
      */
-    private fun hideAllBars() {
+    private fun hideSystemBars() {
         // Configure the behavior of the hidden system bars
         windowInsetsController?.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+
         // Hide both the status bar and the navigation bar
         windowInsetsController?.hide(WindowInsetsCompat.Type.systemBars())
-        // Hide the action bar
-        (activity as AppCompatActivity).supportActionBar?.hide()
     }
 
     /**
-     * Show all the system bars and the navigation bar.
+     * Show the status and navigation bars.
      */
-    private fun showAllBars() {
+    private fun showSystemBars() {
         // Show all the system bars
         windowInsetsController?.show(WindowInsetsCompat.Type.systemBars())
-        // Show the action bar
-        (activity as AppCompatActivity).supportActionBar?.show()
     }
 }
