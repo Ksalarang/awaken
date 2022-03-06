@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Awaken">
         <activity
+            android:name=".ui.presets.session.SessionActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
