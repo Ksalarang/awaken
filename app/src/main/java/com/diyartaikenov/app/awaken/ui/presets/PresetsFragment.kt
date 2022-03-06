@@ -1,6 +1,5 @@
 package com.diyartaikenov.app.awaken.ui.presets
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +13,8 @@ import com.diyartaikenov.app.awaken.R
 import com.diyartaikenov.app.awaken.databinding.FragmentPresetsBinding
 import com.diyartaikenov.app.awaken.model.MeditationPreset
 import com.diyartaikenov.app.awaken.ui.adapter.PresetListAdapter
-import com.diyartaikenov.app.awaken.ui.presets.session.SessionActivity
 import com.diyartaikenov.app.awaken.ui.viewmodel.PresetViewModel
 import com.diyartaikenov.app.awaken.ui.viewmodel.PresetViewModelFactory
-
-const val EXTRA_SESSION_DURATION = "session_duration"
 
 /**
  * A [Fragment] to view the list of [MeditationPreset]s stored in the database.
@@ -55,9 +51,9 @@ class PresetsFragment: Fragment() {
         val adapter = PresetListAdapter(
             { preset ->
                 // A click listener to open the session fragment
-                val sessionIntent = Intent(context, SessionActivity::class.java)
-                sessionIntent.putExtra(EXTRA_SESSION_DURATION, preset.durationInMinutes)
-                startActivity(sessionIntent)
+                findNavController().navigate(
+                    PresetsFragmentDirections.actionNavPresetsToNavSession(preset.durationInMinutes)
+                )
             },
             { preset ->
                 // A click listener to edit the preset

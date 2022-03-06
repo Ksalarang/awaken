@@ -17,6 +17,9 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_nav_presets_to_nav_session"
+            app:destination="@id/nav_session" />
     </fragment>
 
     <fragment
@@ -34,6 +37,17 @@
             app:argType="long"
             android:defaultValue="0L" />
     </fragment>
+
+    <activity
+        android:id="@+id/nav_session"
+        android:name="com.diyartaikenov.app.awaken.ui.presets.session.SessionActivity"
+        tools:layout="@layout/activity_session">
+
+        <argument
+            android:name="duration"
+            app:argType="integer"
+            android:defaultValue="1" />
+    </activity>
 
     <fragment
         android:id="@+id/nav_stats"

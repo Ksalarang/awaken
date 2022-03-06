@@ -5,13 +5,14 @@ import android.os.Bundle
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.diyartaikenov.app.awaken.R
+import androidx.navigation.navArgs
 import com.diyartaikenov.app.awaken.databinding.ActivitySessionBinding
-import com.diyartaikenov.app.awaken.ui.presets.EXTRA_SESSION_DURATION
 
 class SessionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySessionBinding
+
+    private val navArgs: SessionActivityArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,9 +23,7 @@ class SessionActivity : AppCompatActivity() {
         hideSystemBars()
         supportActionBar?.hide()
 
-        val sessionDuration = intent.getIntExtra(EXTRA_SESSION_DURATION, 0)
-
-        binding.etMinutes.text = sessionDuration.toString()
+        binding.etMinutes.text = navArgs.duration.toString()
     }
 
     private fun hideSystemBars() {
