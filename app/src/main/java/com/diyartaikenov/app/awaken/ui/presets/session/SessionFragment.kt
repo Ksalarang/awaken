@@ -1,4 +1,4 @@
-package com.diyartaikenov.app.awaken.ui.presets
+package com.diyartaikenov.app.awaken.ui.presets.session
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/nav_session"
-        android:name="com.diyartaikenov.app.awaken.ui.presets.SessionFragment"
+        android:name="com.diyartaikenov.app.awaken.ui.presets.session.SessionFragment"
         android:label=''
         tools:layout="@layout/fragment_session" />
 
