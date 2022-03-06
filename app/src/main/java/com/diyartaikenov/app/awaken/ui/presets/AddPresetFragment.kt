@@ -34,14 +34,15 @@ class AddPresetFragment : Fragment() {
 
     private val navArgs: AddPresetFragmentArgs by navArgs()
 
-    private lateinit var binding: FragmentAddPresetBinding
+    private var _binding: FragmentAddPresetBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentAddPresetBinding.inflate(inflater, container, false)
+        _binding = FragmentAddPresetBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -94,6 +95,11 @@ class AddPresetFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     /**

@@ -28,22 +28,25 @@ class PresetsFragment: Fragment() {
         )
     }
 
-    private lateinit var binding: FragmentPresetsBinding
-    private lateinit var mainActivity: MainActivity
+    private var _binding: FragmentPresetsBinding? = null
+    private val binding get() = _binding!!
+
+    private var _mainActivity: MainActivity? = null
+    private val mainActivity get() = _mainActivity!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPresetsBinding.inflate(inflater, container, false)
+        _binding = FragmentPresetsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mainActivity = requireActivity() as MainActivity
+        _mainActivity = requireActivity() as MainActivity
 
         val adapter = PresetListAdapter(
             { preset ->
@@ -80,5 +83,11 @@ class PresetsFragment: Fragment() {
     override fun onResume() {
         super.onResume()
         mainActivity.setBottomNavigationVisibility(View.VISIBLE)
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        _mainActivity = null
+        super.onDestroyView()
     }
 }
