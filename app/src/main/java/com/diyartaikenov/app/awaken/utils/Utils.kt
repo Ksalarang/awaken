@@ -1,5 +1,6 @@
 package com.diyartaikenov.app.awaken.utils
 
+import android.os.Build
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -20,5 +21,7 @@ class Utils {
 
             windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
         }
+
+        fun isOreoOrAbove() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
     }
 }

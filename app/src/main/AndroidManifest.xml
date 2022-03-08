@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.diyartaikenov.app.awaken">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"
@@ -23,6 +25,10 @@
 
         <activity
             android:name=".ui.presets.session.SessionActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".ui.presets.session.SessionService"
             android:exported="false" />
     </application>
 </manifest>
