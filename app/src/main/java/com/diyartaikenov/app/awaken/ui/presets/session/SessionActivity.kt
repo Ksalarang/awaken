@@ -1,5 +1,6 @@
 package com.diyartaikenov.app.awaken.ui.presets.session
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
@@ -9,6 +10,7 @@ import android.content.IntentFilter
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.navArgs
@@ -94,16 +96,28 @@ class SessionActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             intent?.apply {
                 when(getIntExtra(EXTRA_RESULT_CODE, 0)) {
+
                     MINUTES_RESULT_CODE -> {
-                        binding.tvMinutes.text =
-                            getIntExtra(EXTRA_SESSION_MINUTES, 0).toString()
+                        binding.tvMinutes.update(getIntExtra(EXTRA_SESSION_MINUTES, 0))
                     }
+
                     SECONDS_RESULT_CODE -> {
-                        binding.tvSeconds.text =
-                            getIntExtra(EXTRA_SESSION_SECONDS, 0).toString()
+                        binding.tvSeconds.update(getIntExtra(EXTRA_SESSION_SECONDS, 0))
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Update the textView so that there is an additional zero before a one-digit value.
+     */
+    @SuppressLint("SetTextI18n")
+    private fun TextView.update(value: Int) {
+        if (value < 10) {
+            this.text = "0$value"
+        } else {
+            this.text = value.toString()
         }
     }
 }
