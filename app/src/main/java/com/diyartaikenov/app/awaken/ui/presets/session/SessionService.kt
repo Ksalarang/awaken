@@ -1,20 +1,20 @@
 package com.diyartaikenov.app.awaken.ui.presets.session
 
 import android.app.Notification
-import android.app.Service
 import android.content.Intent
-import android.os.IBinder
-import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.LifecycleService
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.diyartaikenov.app.awaken.R
 
-class SessionService: Service() {
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
-    }
+class SessionService: LifecycleService() {
+
+    private lateinit var sessionTimer: SessionTimer
+    private lateinit var broadcastManager: LocalBroadcastManager
 
     override fun onCreate() {
         super.onCreate()
+        broadcastManager = LocalBroadcastManager.getInstance(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -22,13 +22,19 @@ class SessionService: Service() {
 
         intent?.apply {
             when(getSerializableExtra(EXTRA_SESSION_COMMAND)) {
+
                 SessionCommand.START -> {
+                    sessionTimer = SessionTimer(
+                        getIntExtra(EXTRA_SESSION_DURATION_MINUTES, 0)
+                    )
+                    observeSessionState()
+
+                    sessionTimer.start()
                     startForeground(SESSION_NOTIFICATION_ID, buildNotification())
-                    Log.d(tag, "service started")
                 }
+
                 SessionCommand.STOP -> {
                     stopSelf()
-                    Log.d(tag, "service stop self")
                 }
             }
         }
@@ -37,7 +43,23 @@ class SessionService: Service() {
     }
 
     override fun onDestroy() {
+        sessionTimer.stop()
         super.onDestroy()
+    }
+
+    private fun observeSessionState() {
+        sessionTimer.minutes.observe(this@SessionService) { minutes ->
+            val sendMinutesIntent = Intent(ACTION_SESSION_STATE_CHANGED)
+                .putExtra(EXTRA_RESULT_CODE, MINUTES_RESULT_CODE)
+                .putExtra(EXTRA_SESSION_MINUTES, minutes)
+            broadcastManager.sendBroadcast(sendMinutesIntent)
+        }
+        sessionTimer.seconds.observe(this@SessionService) { seconds ->
+            val sendSecondsIntent = Intent(ACTION_SESSION_STATE_CHANGED)
+                .putExtra(EXTRA_RESULT_CODE, SECONDS_RESULT_CODE)
+                .putExtra(EXTRA_SESSION_SECONDS, seconds)
+            broadcastManager.sendBroadcast((sendSecondsIntent))
+        }
     }
 
     private fun buildNotification(): Notification {

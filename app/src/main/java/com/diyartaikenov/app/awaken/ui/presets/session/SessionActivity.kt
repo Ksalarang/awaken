@@ -2,24 +2,28 @@ package com.diyartaikenov.app.awaken.ui.presets.session
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.navArgs
 import com.diyartaikenov.app.awaken.R
 import com.diyartaikenov.app.awaken.databinding.ActivitySessionBinding
 import com.diyartaikenov.app.awaken.utils.Utils
-
-const val tag = "myTag"
 
 class SessionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySessionBinding
 
     private val navArgs: SessionActivityArgs by navArgs()
+
+    private lateinit var broadcastManager: LocalBroadcastManager
+    private lateinit var sessionStateReceiver: BroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,11 +37,26 @@ class SessionActivity : AppCompatActivity() {
             createNotificationChannel()
         }
 
+        sessionStateReceiver = createBroadCastReceiver()
+
+        broadcastManager = LocalBroadcastManager.getInstance(this)
+        broadcastManager.registerReceiver(
+            sessionStateReceiver,
+            IntentFilter(ACTION_SESSION_STATE_CHANGED)
+        )
+
         startSessionService()
 
-        binding.fabPauseOrContinue.setOnClickListener {
-            stopSessionService()
+        binding.apply {
+            fabPauseOrContinue.setOnClickListener {
+                stopSessionService()
+            }
         }
+    }
+
+    override fun onDestroy() {
+        broadcastManager.unregisterReceiver(sessionStateReceiver)
+        super.onDestroy()
     }
 
     private fun startSessionService() {
@@ -47,7 +66,6 @@ class SessionActivity : AppCompatActivity() {
 
         if (Utils.isOreoOrAbove()) {
             startForegroundService(startServiceIntent)
-            Log.d(tag, "start foreground")
         } else {
             startService(startServiceIntent)
         }
@@ -71,5 +89,22 @@ class SessionActivity : AppCompatActivity() {
 
         (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
             .createNotificationChannel(channel)
+    }
+
+    private fun createBroadCastReceiver() = object: BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.apply {
+                when(getIntExtra(EXTRA_RESULT_CODE, 0)) {
+                    MINUTES_RESULT_CODE -> {
+                        binding.tvMinutes.text =
+                            getIntExtra(EXTRA_SESSION_MINUTES, 0).toString()
+                    }
+                    SECONDS_RESULT_CODE -> {
+                        binding.tvSeconds.text =
+                            getIntExtra(EXTRA_SESSION_SECONDS, 0).toString()
+                    }
+                }
+            }
+        }
     }
 }
