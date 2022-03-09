@@ -29,7 +29,7 @@ class SessionActivity : AppCompatActivity() {
         binding = ActivitySessionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Utils.hideSystemBars(window.decorView)
+        Utils.hideStatusBars(window.decorView)
         supportActionBar?.hide()
 
         if (Utils.isOreoOrAbove()) {

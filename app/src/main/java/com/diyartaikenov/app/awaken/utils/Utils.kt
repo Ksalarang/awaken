@@ -9,17 +9,17 @@ import androidx.core.view.WindowInsetsControllerCompat
 class Utils {
     companion object {
         /**
-         * Hide the status bar and the navigation bar.
-         * Also change the system bars' behavior to show transient bars by swipe.
+         * Hide the status bar and change the system bars' behavior
+         * to show transient bars by swipe.
          */
-        fun hideSystemBars(windowDecorView: View) {
+        fun hideStatusBars(windowDecorView: View) {
             val windowInsetsController =
                 ViewCompat.getWindowInsetsController(windowDecorView) ?: return
 
             windowInsetsController.systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
-            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+            windowInsetsController.hide(WindowInsetsCompat.Type.statusBars())
         }
 
         fun isOreoOrAbove() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
