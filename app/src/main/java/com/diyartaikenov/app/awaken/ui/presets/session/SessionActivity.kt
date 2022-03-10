@@ -26,6 +26,9 @@ class SessionActivity : AppCompatActivity() {
     private lateinit var broadcastManager: LocalBroadcastManager
     private lateinit var sessionStateReceiver: BroadcastReceiver
 
+    private var timerStarted = false
+    private var timerRunning = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySessionBinding.inflate(layoutInflater)
@@ -50,7 +53,7 @@ class SessionActivity : AppCompatActivity() {
 
         binding.apply {
             fabPauseOrContinue.setOnClickListener {
-                stopSessionService()
+
             }
         }
     }
@@ -103,6 +106,14 @@ class SessionActivity : AppCompatActivity() {
 
                     SECONDS_RESULT_CODE -> {
                         binding.tvSeconds.update(getIntExtra(EXTRA_SESSION_SECONDS, 0))
+                    }
+
+                    TIMER_STARTED_RESULT_CODE -> {
+                        timerStarted = getBooleanExtra(EXTRA_SESSION_STARTED, false)
+                    }
+
+                    TIMER_RUNNING_RESULT_CODE -> {
+                        timerRunning = getBooleanExtra(EXTRA_SESSION_RUNNING, false)
                     }
                 }
             }

@@ -48,17 +48,29 @@ class SessionService: LifecycleService() {
     }
 
     private fun observeSessionState() {
-        sessionTimer.minutes.observe(this@SessionService) { minutes ->
-            val sendMinutesIntent = Intent(ACTION_SESSION_STATE_CHANGED)
+        sessionTimer.minutes.observe(this) { minutes ->
+            val minutesChanged = Intent(ACTION_SESSION_STATE_CHANGED)
                 .putExtra(EXTRA_RESULT_CODE, MINUTES_RESULT_CODE)
                 .putExtra(EXTRA_SESSION_MINUTES, minutes)
-            broadcastManager.sendBroadcast(sendMinutesIntent)
+            broadcastManager.sendBroadcast(minutesChanged)
         }
-        sessionTimer.seconds.observe(this@SessionService) { seconds ->
-            val sendSecondsIntent = Intent(ACTION_SESSION_STATE_CHANGED)
+        sessionTimer.seconds.observe(this) { seconds ->
+            val secondsChanged = Intent(ACTION_SESSION_STATE_CHANGED)
                 .putExtra(EXTRA_RESULT_CODE, SECONDS_RESULT_CODE)
                 .putExtra(EXTRA_SESSION_SECONDS, seconds)
-            broadcastManager.sendBroadcast((sendSecondsIntent))
+            broadcastManager.sendBroadcast((secondsChanged))
+        }
+        sessionTimer.timerStarted.observe(this) { started ->
+            val timerStateStarted = Intent(ACTION_SESSION_STATE_CHANGED)
+                .putExtra(EXTRA_RESULT_CODE, TIMER_STARTED_RESULT_CODE)
+                .putExtra(EXTRA_SESSION_STARTED, started)
+            broadcastManager.sendBroadcast(timerStateStarted)
+        }
+        sessionTimer.timerRunning.observe(this) { running ->
+            val timerStateRunning = Intent(ACTION_SESSION_STATE_CHANGED)
+                .putExtra(EXTRA_RESULT_CODE, TIMER_RUNNING_RESULT_CODE)
+                .putExtra(EXTRA_SESSION_RUNNING, running)
+            broadcastManager.sendBroadcast(timerStateRunning)
         }
     }
 
