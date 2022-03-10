@@ -9,7 +9,6 @@
     android:paddingTop="@dimen/margin_edge_small"
     android:paddingBottom="@dimen/margin_edge_small"
     android:clipToPadding="false"
-    android:layout_marginTop="?android:attr/actionBarSize"
     tools:context=".ui.presets.PresetsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
