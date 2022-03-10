@@ -12,21 +12,25 @@ class SessionTimer(private val initialDuration: Int) {
     private var _minutes = MutableLiveData(0)
     private var _seconds = MutableLiveData(0)
     private var _timerStarted = MutableLiveData(false)
-    private var _timerResumed = MutableLiveData(false)
+    private var _timerRunning = MutableLiveData(false)
 
     val minutes: LiveData<Int> = _minutes
     val seconds: LiveData<Int> = _seconds
     val timerStarted: LiveData<Boolean> = _timerStarted
-    val timerResumed: LiveData<Boolean> = _timerResumed
+    val timerRunning: LiveData<Boolean> = _timerRunning
 
     private val timer = createTimer()
 
     fun start() {
         timer.start()
+        _timerStarted.value = true
+        _timerRunning.value = true
     }
 
     fun stop() {
         timer.cancel()
+        _timerStarted.value = false
+        _timerRunning.value = false
     }
 
     private fun createTimer(): CountDownTimer {
@@ -40,7 +44,8 @@ class SessionTimer(private val initialDuration: Int) {
             }
 
             override fun onFinish() {
-
+                _timerStarted.value = false
+                _timerRunning.value = false
             }
         }
     }
