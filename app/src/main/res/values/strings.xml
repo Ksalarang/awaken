@@ -44,4 +44,8 @@
         <item quantity="other">%d minutes left</item>
     </plurals>
     <string name="info_session_ended">Meditation ended</string>
+    <string name="question_quit_without_saving">Quit without saving?</string>
+    <string name="answer_save">Save</string>
+    <string name="answer_quit">Quit</string>
+    <string name="title_session_active">Session is active</string>
 </resources>

@@ -78,7 +78,7 @@ class SessionService: LifecycleService() {
     private fun buildNotification(): Notification {
         return NotificationCompat.Builder(applicationContext, SESSION_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Meditation session is active")
+            .setContentTitle(getString(R.string.title_session_active))
             .setCategory(NotificationCompat.CATEGORY_STOPWATCH)
             .build()
     }
