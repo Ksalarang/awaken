@@ -10,6 +10,8 @@ import android.content.IntentFilter
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -49,11 +51,25 @@ class SessionActivity : AppCompatActivity() {
             IntentFilter(ACTION_SESSION_STATE_CHANGED)
         )
 
-        startSessionService()
+        val startServiceIntent = Intent(this, SessionService::class.java)
+            .putExtra(EXTRA_SESSION_COMMAND, SessionCommand.START)
+            .putExtra(EXTRA_DURATION_MINUTES, navArgs.duration)
+
+        sendIntentToService(startServiceIntent)
 
         binding.apply {
             fabPauseOrContinue.setOnClickListener {
-
+                if (timerStarted && timerRunning) {
+                    pauseSession()
+                } else if (timerStarted && !timerRunning){
+                    resumeSession()
+                }
+            }
+            fabStopSession.setOnClickListener {
+                val intent = Intent(this@SessionActivity, SessionService::class.java)
+                    .putExtra(EXTRA_SESSION_COMMAND, SessionCommand.STOP)
+                sendIntentToService(intent)
+                finish()
             }
         }
     }
@@ -63,23 +79,29 @@ class SessionActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    private fun startSessionService() {
-        val startServiceIntent = Intent(this, SessionService::class.java)
-            .putExtra(EXTRA_SESSION_COMMAND, SessionCommand.START)
-            .putExtra(EXTRA_SESSION_DURATION_MINUTES, navArgs.duration)
-
+    private fun sendIntentToService(serviceIntent: Intent) {
         if (Utils.isOreoOrAbove()) {
-            startForegroundService(startServiceIntent)
+            startForegroundService(serviceIntent)
         } else {
-            startService(startServiceIntent)
+            startService(serviceIntent)
         }
     }
 
-    private fun stopSessionService() {
+    private fun pauseSession() {
         val intent = Intent(this, SessionService::class.java)
-            .putExtra(EXTRA_SESSION_COMMAND, SessionCommand.STOP)
+            .putExtra(EXTRA_SESSION_COMMAND, SessionCommand.PAUSE)
+        sendIntentToService(intent)
+    }
 
-        stopService(intent)
+    private fun resumeSession() {
+        val minutes = binding.tvMinutes.text.toString().toInt()
+        val seconds = binding.tvSeconds.text.toString().toInt()
+
+        val intent = Intent(this, SessionService::class.java)
+            .putExtra(EXTRA_SESSION_COMMAND, SessionCommand.RESUME)
+            .putExtra(EXTRA_DURATION_MINUTES, minutes)
+            .putExtra(EXTRA_DURATION_SECONDS, seconds)
+        sendIntentToService(intent)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -114,6 +136,13 @@ class SessionActivity : AppCompatActivity() {
 
                     TIMER_RUNNING_RESULT_CODE -> {
                         timerRunning = getBooleanExtra(EXTRA_SESSION_RUNNING, false)
+                        if (timerRunning) {
+                            binding.fabPauseOrContinue.setImageResource(R.drawable.ic_pause)
+                            binding.fabStopSession.visibility = View.INVISIBLE
+                        } else {
+                            binding.fabPauseOrContinue.setImageResource(R.drawable.ic_play)
+                            binding.fabStopSession.visibility = View.VISIBLE
+                        }
                     }
                 }
             }

@@ -2,11 +2,13 @@ package com.diyartaikenov.app.awaken.ui.presets.session
 
 import android.app.Notification
 import android.content.Intent
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.diyartaikenov.app.awaken.R
 
+const val tag = "mytag"
 class SessionService: LifecycleService() {
 
     private lateinit var sessionTimer: SessionTimer
@@ -25,7 +27,7 @@ class SessionService: LifecycleService() {
 
                 SessionCommand.START -> {
                     sessionTimer = SessionTimer(
-                        getIntExtra(EXTRA_SESSION_DURATION_MINUTES, 0)
+                        getIntExtra(EXTRA_DURATION_MINUTES, 0)
                     )
                     observeSessionState()
 
@@ -33,18 +35,25 @@ class SessionService: LifecycleService() {
                     startForeground(SESSION_NOTIFICATION_ID, buildNotification())
                 }
 
+                SessionCommand.RESUME -> {
+                    sessionTimer.resume(
+                        getIntExtra(EXTRA_DURATION_MINUTES, 0),
+                        getIntExtra(EXTRA_DURATION_SECONDS, 0)
+                    )
+                }
+
+                SessionCommand.PAUSE -> {
+                    sessionTimer.pause()
+                }
+
                 SessionCommand.STOP -> {
+                    sessionTimer.stop()
                     stopSelf()
                 }
             }
         }
 
         return START_NOT_STICKY
-    }
-
-    override fun onDestroy() {
-        sessionTimer.stop()
-        super.onDestroy()
     }
 
     private fun observeSessionState() {
@@ -58,7 +67,7 @@ class SessionService: LifecycleService() {
             val secondsChanged = Intent(ACTION_SESSION_STATE_CHANGED)
                 .putExtra(EXTRA_RESULT_CODE, SECONDS_RESULT_CODE)
                 .putExtra(EXTRA_SESSION_SECONDS, seconds)
-            broadcastManager.sendBroadcast((secondsChanged))
+            broadcastManager.sendBroadcast(secondsChanged)
         }
         sessionTimer.timerStarted.observe(this) { started ->
             val timerStateStarted = Intent(ACTION_SESSION_STATE_CHANGED)
