@@ -1,13 +1,17 @@
 package com.diyartaikenov.app.awaken.ui.presets.session
 
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 private const val SECOND_IN_MILLIS = 1000L
 private const val SECONDS_MAX_VALUE = 59
 
-class SessionTimer(private val initialDuration: Int) {
+class SessionTimer(
+    private var initialMinutes: Int,
+    private var initialSeconds: Int = 0
+) {
 
     private var _minutes = MutableLiveData(0)
     private var _seconds = MutableLiveData(0)
@@ -19,11 +23,23 @@ class SessionTimer(private val initialDuration: Int) {
     val timerStarted: LiveData<Boolean> = _timerStarted
     val timerRunning: LiveData<Boolean> = _timerRunning
 
-    private val timer = createTimer()
+    private var timer = createTimer()
 
     fun start() {
         timer.start()
         _timerStarted.value = true
+        _timerRunning.value = true
+    }
+
+    fun pause() {
+        timer.cancel()
+        _timerRunning.value = false
+    }
+
+    fun resume(m: Int, s: Int) {
+        initialMinutes = m
+        initialSeconds = s
+        timer = createTimer().start()
         _timerRunning.value = true
     }
 
@@ -34,8 +50,10 @@ class SessionTimer(private val initialDuration: Int) {
     }
 
     private fun createTimer(): CountDownTimer {
+        val millisInFuture = (initialMinutes * 60 + initialSeconds) * SECOND_IN_MILLIS
+
         return object: CountDownTimer(
-            initialDuration * 60 * SECOND_IN_MILLIS,
+            millisInFuture,
             SECOND_IN_MILLIS
         ) {
 
