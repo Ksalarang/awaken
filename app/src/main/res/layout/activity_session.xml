@@ -43,6 +43,15 @@
             tools:text="00" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <TextView
+        android:id="@+id/tvMinutesLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timer_layout"
+        tools:text="8 minutes left" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabPauseOrContinue"
         android:src="@drawable/ic_pause"

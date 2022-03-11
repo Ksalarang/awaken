@@ -39,4 +39,9 @@
     <string name="_00" translatable="false">00</string>
     <string name="channel_name">Meditation session channel</string>
     <string name="channel_description">Shows a permanent notification during a meditation session</string>
+    <plurals name="minutes_left">
+        <item quantity="one">%d minute left</item>
+        <item quantity="other">%d minutes left</item>
+    </plurals>
+    <string name="info_session_ended">Meditation ended</string>
 </resources>

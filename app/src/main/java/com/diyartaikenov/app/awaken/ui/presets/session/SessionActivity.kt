@@ -10,7 +10,6 @@ import android.content.IntentFilter
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -123,7 +122,11 @@ class SessionActivity : AppCompatActivity() {
                 when(getIntExtra(EXTRA_RESULT_CODE, 0)) {
 
                     MINUTES_RESULT_CODE -> {
-                        binding.tvMinutes.update(getIntExtra(EXTRA_SESSION_MINUTES, 0))
+                        val minutes = getIntExtra(EXTRA_SESSION_MINUTES, 0)
+                        binding.tvMinutes.update(minutes)
+                        val minutesLeft = navArgs.duration - minutes
+                        binding.tvMinutesLeft.text = resources
+                            .getQuantityString(R.plurals.minutes_left, minutesLeft, minutesLeft)
                     }
 
                     SECONDS_RESULT_CODE -> {
@@ -132,6 +135,9 @@ class SessionActivity : AppCompatActivity() {
 
                     TIMER_STARTED_RESULT_CODE -> {
                         timerStarted = getBooleanExtra(EXTRA_SESSION_STARTED, false)
+                        if (!timerStarted) {
+                            binding.tvMinutesLeft.text = getString(R.string.info_session_ended)
+                        }
                     }
 
                     TIMER_RUNNING_RESULT_CODE -> {
