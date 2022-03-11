@@ -18,6 +18,7 @@ import androidx.navigation.navArgs
 import com.diyartaikenov.app.awaken.R
 import com.diyartaikenov.app.awaken.databinding.ActivitySessionBinding
 import com.diyartaikenov.app.awaken.utils.Utils
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class SessionActivity : AppCompatActivity() {
 
@@ -59,15 +60,13 @@ class SessionActivity : AppCompatActivity() {
         binding.apply {
             fabPauseOrContinue.setOnClickListener {
                 if (timerStarted && timerRunning) {
-                    pauseSession()
+                    sendCommandToService(SessionCommand.PAUSE)
                 } else if (timerStarted && !timerRunning){
-                    resumeSession()
+                    sendCommandToService(SessionCommand.RESUME)
                 }
             }
             fabStopSession.setOnClickListener {
-                val intent = Intent(this@SessionActivity, SessionService::class.java)
-                    .putExtra(EXTRA_SESSION_COMMAND, SessionCommand.STOP)
-                sendIntentToService(intent)
+                sendCommandToService(SessionCommand.STOP)
                 finish()
             }
         }
@@ -86,16 +85,14 @@ class SessionActivity : AppCompatActivity() {
         }
     }
 
-    private fun pauseSession() {
+    private fun sendCommandToService(command: SessionCommand) {
         val intent = Intent(this, SessionService::class.java)
-            .putExtra(EXTRA_SESSION_COMMAND, SessionCommand.PAUSE)
-        sendIntentToService(intent)
-    }
-
-    private fun resumeSession() {
-        val intent = Intent(this, SessionService::class.java)
-            .putExtra(EXTRA_SESSION_COMMAND, SessionCommand.RESUME)
-        sendIntentToService(intent)
+            .putExtra(EXTRA_SESSION_COMMAND, command)
+        if (Utils.isOreoOrAbove()) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -132,6 +129,9 @@ class SessionActivity : AppCompatActivity() {
                         timerStarted = getBooleanExtra(EXTRA_SESSION_STARTED, false)
                         if (!timerStarted) {
                             // fixme: hide the playOrPause fab when the session ended
+//                            binding.fabStopSession.size = FloatingActionButton.SIZE_NORMAL
+//                            binding.fabPauseOrContinue.visibility = View.GONE
+                            // put the stop fab in pause fab's place
                             binding.tvMinutesLeft.text = getString(R.string.info_session_ended)
                         }
                     }
