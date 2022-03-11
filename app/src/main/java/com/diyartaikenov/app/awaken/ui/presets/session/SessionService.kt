@@ -34,16 +34,9 @@ class SessionService: LifecycleService() {
                     startForeground(SESSION_NOTIFICATION_ID, buildNotification())
                 }
 
-                SessionCommand.RESUME -> {
-                    sessionTimer.resume(
-                        getIntExtra(EXTRA_DURATION_MINUTES, 0),
-                        getIntExtra(EXTRA_DURATION_SECONDS, 0)
-                    )
-                }
+                SessionCommand.RESUME -> sessionTimer.resume()
 
-                SessionCommand.PAUSE -> {
-                    sessionTimer.pause()
-                }
+                SessionCommand.PAUSE -> sessionTimer.pause()
 
                 SessionCommand.STOP -> {
                     sessionTimer.stop()

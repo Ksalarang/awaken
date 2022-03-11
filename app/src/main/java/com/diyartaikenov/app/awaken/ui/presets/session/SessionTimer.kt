@@ -1,17 +1,14 @@
 package com.diyartaikenov.app.awaken.ui.presets.session
 
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 private const val SECOND_IN_MILLIS = 1000L
 private const val SECONDS_MAX_VALUE = 59
+private const val MINUTE_IN_SECONDS = 60
 
-class SessionTimer(
-    private var initialMinutes: Int,
-    private var initialSeconds: Int = 0
-) {
+class SessionTimer(private var initialMinutes: Int) {
 
     private var _minutes = MutableLiveData(0)
     private var _seconds = MutableLiveData(0)
@@ -23,7 +20,11 @@ class SessionTimer(
     val timerStarted: LiveData<Boolean> = _timerStarted
     val timerRunning: LiveData<Boolean> = _timerRunning
 
+    private var secondsTotal = initialMinutes * MINUTE_IN_SECONDS
     private var timer = createTimer()
+
+    private var minutesTemp = 0
+    private var secondsTemp = 0
 
     fun start() {
         timer.start()
@@ -32,13 +33,19 @@ class SessionTimer(
     }
 
     fun pause() {
+        // Save minutes and seconds in temporary variables
+        minutesTemp = _minutes.value!!
+        secondsTemp = _seconds.value!!
+
         timer.cancel()
         _timerRunning.value = false
     }
 
-    fun resume(m: Int, s: Int) {
-        initialMinutes = m
-        initialSeconds = s
+    fun resume() {
+        // recalculate total amount of seconds left after a pause
+        val secondsPassed = minutesTemp * MINUTE_IN_SECONDS + secondsTemp
+        secondsTotal = initialMinutes * MINUTE_IN_SECONDS - secondsPassed
+
         timer = createTimer().start()
         _timerRunning.value = true
     }
@@ -50,10 +57,8 @@ class SessionTimer(
     }
 
     private fun createTimer(): CountDownTimer {
-        val millisInFuture = (initialMinutes * 60 + initialSeconds) * SECOND_IN_MILLIS
-
         return object: CountDownTimer(
-            millisInFuture,
+            secondsTotal * SECOND_IN_MILLIS,
             SECOND_IN_MILLIS
         ) {
 

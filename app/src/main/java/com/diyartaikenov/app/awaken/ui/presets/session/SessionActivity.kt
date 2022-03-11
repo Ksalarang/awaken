@@ -93,13 +93,8 @@ class SessionActivity : AppCompatActivity() {
     }
 
     private fun resumeSession() {
-        val minutes = binding.tvMinutes.text.toString().toInt()
-        val seconds = binding.tvSeconds.text.toString().toInt()
-
         val intent = Intent(this, SessionService::class.java)
             .putExtra(EXTRA_SESSION_COMMAND, SessionCommand.RESUME)
-            .putExtra(EXTRA_DURATION_MINUTES, minutes)
-            .putExtra(EXTRA_DURATION_SECONDS, seconds)
         sendIntentToService(intent)
     }
 
@@ -136,6 +131,7 @@ class SessionActivity : AppCompatActivity() {
                     TIMER_STARTED_RESULT_CODE -> {
                         timerStarted = getBooleanExtra(EXTRA_SESSION_STARTED, false)
                         if (!timerStarted) {
+                            // fixme: hide the playOrPause fab when the session ended
                             binding.tvMinutesLeft.text = getString(R.string.info_session_ended)
                         }
                     }
