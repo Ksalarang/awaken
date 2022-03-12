@@ -53,6 +53,19 @@
         tools:text="8 minutes left" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCloseSession"
+        android:src="@drawable/ic_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_edge"
+        android:visibility="invisible"
+        android:contentDescription="@string/finish_session_fab_description"
+        app:fabSize="mini"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/fabPauseOrContinue" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabPauseOrContinue"
         android:src="@drawable/ic_pause"
         android:layout_width="wrap_content"
@@ -62,17 +75,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabCloseSession"
-        android:src="@drawable/ic_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_edge_small"
-        android:visibility="invisible"
-        android:contentDescription="@string/finish_session_fab_description"
-        app:fabSize="mini"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/fabPauseOrContinue" />
 </androidx.constraintlayout.widget.ConstraintLayout>
