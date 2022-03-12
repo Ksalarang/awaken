@@ -5,12 +5,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.diyartaikenov.app.awaken.model.MeditationPreset
+import com.diyartaikenov.app.awaken.model.MeditationSession
 
 /**
  * A Room database to persist data for this app.
- * This database stores a [MeditationPreset] entity.
+ * This database stores [MeditationPreset] and [MeditationSession] entities.
  */
-@Database(entities = [MeditationPreset::class], version = 2, exportSchema = false)
+@Database(
+    entities = [MeditationPreset::class, MeditationSession::class],
+    version = 3,
+    exportSchema = false
+)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun meditationPresetDao(): MeditationPresetDao
 
