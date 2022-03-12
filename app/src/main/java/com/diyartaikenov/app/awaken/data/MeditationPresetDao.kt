@@ -5,7 +5,7 @@ import com.diyartaikenov.app.awaken.model.MeditationPreset
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Data Access Object for database interaction.
+ * Data Access Object for database interaction with [MeditationPreset] entity.
  */
 @Dao
 interface MeditationPresetDao {
