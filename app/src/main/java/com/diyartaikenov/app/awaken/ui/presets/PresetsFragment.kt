@@ -31,8 +31,7 @@ class PresetsFragment: Fragment() {
     private var _binding: FragmentPresetsBinding? = null
     private val binding get() = _binding!!
 
-    private var _mainActivity: MainActivity? = null
-    private val mainActivity get() = _mainActivity!!
+    private lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +45,7 @@ class PresetsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _mainActivity = requireActivity() as MainActivity
+        mainActivity = requireActivity() as MainActivity
 
         val adapter = PresetListAdapter(
             { preset ->
@@ -88,7 +87,6 @@ class PresetsFragment: Fragment() {
 
     override fun onDestroyView() {
         _binding = null
-        _mainActivity = null
         super.onDestroyView()
     }
 }
