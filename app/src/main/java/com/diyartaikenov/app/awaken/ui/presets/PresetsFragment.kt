@@ -19,6 +19,7 @@ import com.diyartaikenov.app.awaken.ui.viewmodel.PresetViewModelFactory
 /**
  * A [Fragment] to view the list of [MeditationPreset]s stored in the database.
  * Tap the [FloatingActionButton] to add a new [MeditationPreset]
+ * Tap any preset item or the 'Meditate' button to launch a new session
  */
 class PresetsFragment: Fragment() {
 
