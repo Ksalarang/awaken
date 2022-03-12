@@ -3,7 +3,6 @@ package com.diyartaikenov.app.awaken.ui.presets.session
 const val EXTRA_SESSION_COMMAND = "SESSION_COMMAND"
 
 const val EXTRA_DURATION_MINUTES = "SESSION_DURATION_MINUTES"
-const val EXTRA_DURATION_SECONDS = "SESSION_DURATION_SECONDS"
 
 const val EXTRA_SESSION_MINUTES = "SESSION_MINUTES"
 const val EXTRA_SESSION_SECONDS = "SESSION_SECONDS"
@@ -21,8 +20,6 @@ const val ACTION_SESSION_STATE_CHANGED =
 
 const val SESSION_CHANNEL_ID = "SESSION_CHANNEL_ID"
 const val SESSION_NOTIFICATION_ID = 10
-
-const val tag = "mytag"
 
 enum class SessionCommand {
     START, PAUSE, RESUME, STOP

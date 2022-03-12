@@ -9,6 +9,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -55,18 +56,40 @@ class SessionActivity : AppCompatActivity() {
             .putExtra(EXTRA_SESSION_COMMAND, SessionCommand.START)
             .putExtra(EXTRA_DURATION_MINUTES, navArgs.duration)
 
-        sendIntentToService(startServiceIntent)
+        startSessionService(startServiceIntent)
 
         binding.apply {
-            fabPauseOrContinue.setOnClickListener {
+            fabPauseOrResume.setOnClickListener {
                 if (timerRunning) {
-                    sendCommandToService(SessionCommand.PAUSE)
+                    startServiceWithCommand(SessionCommand.PAUSE)
                 } else if (timerStarted && !timerRunning){
-                    sendCommandToService(SessionCommand.RESUME)
+                    startServiceWithCommand(SessionCommand.RESUME)
                 }
             }
+
             fabCloseSession.setOnClickListener {
-                onBackPressed()
+                if (getMinutes() < 1) {
+                    stopService(Intent(this@SessionActivity, SessionService::class.java))
+                    finish() //fixme: should navigate back with arguments
+                } else {
+                    onSessionEnd()
+                }
+            }
+
+            checkboxDontSave.setOnClickListener {
+                if ((it as CheckBox).isChecked) {
+                    buttonSaveOrQuit.text = getString(R.string.button_quit)
+                } else {
+                    buttonSaveOrQuit.text = getString(R.string.button_save)
+                }
+            }
+
+            buttonSaveOrQuit.setOnClickListener {
+                if (checkboxDontSave.isChecked) {
+                    finish() // fixme: should navigate back with arguments
+                } else {
+                    // todo: save session data
+                }
             }
         }
     }
@@ -78,9 +101,9 @@ class SessionActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         if (timerRunning) {
-            sendCommandToService(SessionCommand.PAUSE)
+            startServiceWithCommand(SessionCommand.PAUSE)
         } else {
-            if (binding.tvMinutes.text.toString().toInt() < 1) {
+            if (getMinutes() < 1) {
                 stopService(Intent(this, SessionService::class.java))
                 super.onBackPressed()
             } else {
@@ -89,7 +112,7 @@ class SessionActivity : AppCompatActivity() {
         }
     }
 
-    private fun sendIntentToService(serviceIntent: Intent) {
+    private fun startSessionService(serviceIntent: Intent) {
         if (Utils.isOreoOrAbove()) {
             startForegroundService(serviceIntent)
         } else {
@@ -97,14 +120,10 @@ class SessionActivity : AppCompatActivity() {
         }
     }
 
-    private fun sendCommandToService(command: SessionCommand) {
+    private fun startServiceWithCommand(command: SessionCommand) {
         val intent = Intent(this, SessionService::class.java)
             .putExtra(EXTRA_SESSION_COMMAND, command)
-        if (Utils.isOreoOrAbove()) {
-            startForegroundService(intent)
-        } else {
-            startService(intent)
-        }
+        startSessionService(intent)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -141,11 +160,9 @@ class SessionActivity : AppCompatActivity() {
                     TIMER_STARTED_RESULT_CODE -> {
                         timerStarted = getBooleanExtra(EXTRA_SESSION_STARTED, false)
 
-                        // When the session's ended
                         if (!timerStarted) {
-                            // todo: hide the pauseOrPlay fab
-                            binding.sessionInfo.text = getString(R.string.info_session_ended)
-                            binding.tvMinutes.update(1) //fixme
+                            onSessionEnd()
+//                            binding.tvMinutes.update(1) //fixme
                         }
                     }
 
@@ -153,10 +170,10 @@ class SessionActivity : AppCompatActivity() {
                         timerRunning = getBooleanExtra(EXTRA_SESSION_RUNNING, false)
 
                         if (timerRunning) {
-                            binding.fabPauseOrContinue.setImageResource(R.drawable.ic_pause)
+                            binding.fabPauseOrResume.setImageResource(R.drawable.ic_pause)
                             binding.fabCloseSession.visibility = View.INVISIBLE
-                        } else {
-                            binding.fabPauseOrContinue.setImageResource(R.drawable.ic_play)
+                        } else if (timerStarted) {
+                            binding.fabPauseOrResume.setImageResource(R.drawable.ic_play)
                             binding.fabCloseSession.visibility = View.VISIBLE
                         }
                     }
@@ -165,8 +182,21 @@ class SessionActivity : AppCompatActivity() {
         }
     }
 
+    private fun onSessionEnd() {
+        binding.apply {
+            val minutes = getMinutes()
+            sessionInfo.text = resources
+                .getQuantityString(R.plurals.session_lasted_minutes, minutes, minutes)
+            fabCloseSession.visibility = View.GONE
+            fabPauseOrResume.visibility = View.GONE
+            buttonSaveOrQuit.visibility = View.VISIBLE
+            checkboxDontSave.visibility = View.VISIBLE
+        }
+    }
+
     private fun buildAlertDialogBuilder(): AlertDialog.Builder {
         val dialogClickListener = dialogClickListener()
+
         return AlertDialog.Builder(this)
             .setMessage(getString(R.string.question_quit_without_saving))
             .setPositiveButton(getString(R.string.answer_quit), dialogClickListener)
@@ -175,11 +205,13 @@ class SessionActivity : AppCompatActivity() {
 
     private fun dialogClickListener() = DialogInterface.OnClickListener { dialog, which ->
         when (which) {
+
             DialogInterface.BUTTON_POSITIVE -> {
                 dialog.dismiss()
                 stopService(Intent(this, SessionService::class.java))
-                finish()
+                finish() // fixme: should navigate back with arguments
             }
+
             DialogInterface.BUTTON_NEGATIVE -> {
                 dialog.dismiss()
             }
@@ -197,4 +229,6 @@ class SessionActivity : AppCompatActivity() {
             this.text = value.toString()
         }
     }
+
+    private fun getMinutes() = binding.tvMinutes.text.toString().toInt()
 }

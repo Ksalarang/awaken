@@ -39,14 +39,22 @@
     <string name="_00" translatable="false">00</string>
     <string name="channel_name">Meditation session channel</string>
     <string name="channel_description">Shows a permanent notification during a meditation session</string>
+
     <plurals name="minutes_left">
         <item quantity="one">%d minute left</item>
         <item quantity="other">%d minutes left</item>
     </plurals>
+    <plurals name="session_lasted_minutes">
+        <item quantity="one">Meditation lasted %d minute</item>
+        <item quantity="many">Meditation lasted %d minutes</item>
+    </plurals>
+
     <string name="info_session_ended">Meditation ended</string>
     <string name="question_quit_without_saving">Quit without saving?</string>
     <string name="answer_save">Save</string>
     <string name="answer_quit">Quit</string>
     <string name="title_session_active">Session is active</string>
     <string name="answer_cancel">Cancel</string>
+    <string name="checkbox_dont_save">Don\'t save</string>
+    <string name="button_quit">Quit</string>
 </resources>

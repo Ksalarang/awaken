@@ -13,6 +13,9 @@
     <dimen name="duration_layout_padding">24dp</dimen>
     <dimen name="icon_button_size">32dp</dimen>
 
+    <!-- Session Activity -->
+    <dimen name="button_margin">24dp</dimen>
+
     <!-- Text sizes -->
     <dimen name="preset_name_font_size">20sp</dimen>
     <dimen name="space_between_text">3sp</dimen>

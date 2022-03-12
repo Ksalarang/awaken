@@ -2,7 +2,6 @@ package com.diyartaikenov.app.awaken.ui.presets.session
 
 import android.app.Notification
 import android.content.Intent
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
