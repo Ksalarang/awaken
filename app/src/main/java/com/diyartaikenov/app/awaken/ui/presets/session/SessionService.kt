@@ -66,6 +66,10 @@ class SessionService: LifecycleService() {
                 .putExtra(EXTRA_RESULT_CODE, TIMER_STARTED_RESULT_CODE)
                 .putExtra(EXTRA_SESSION_STARTED, started)
             broadcastManager.sendBroadcast(timerStateStarted)
+
+            if (!started) {
+                stopSelf()
+            }
         }
         sessionTimer.timerRunning.observe(this) { running ->
             val timerStateRunning = Intent(ACTION_SESSION_STATE_CHANGED)
