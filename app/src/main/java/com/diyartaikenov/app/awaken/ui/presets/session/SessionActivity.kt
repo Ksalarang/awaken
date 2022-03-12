@@ -65,9 +65,8 @@ class SessionActivity : AppCompatActivity() {
                     sendCommandToService(SessionCommand.RESUME)
                 }
             }
-            fabStopSession.setOnClickListener {
-                sendCommandToService(SessionCommand.STOP)
-                finish()
+            fabCloseSession.setOnClickListener {
+                onBackPressed()
             }
         }
     }
@@ -80,9 +79,9 @@ class SessionActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (timerRunning) {
             sendCommandToService(SessionCommand.PAUSE)
-        } else if (timerStarted) {
+        } else {
             if (binding.tvMinutes.text.toString().toInt() < 1) {
-                sendCommandToService(SessionCommand.STOP)
+                stopService(Intent(this, SessionService::class.java))
                 super.onBackPressed()
             } else {
                 alertDialogBuilder.show()
@@ -129,6 +128,7 @@ class SessionActivity : AppCompatActivity() {
                     MINUTES_RESULT_CODE -> {
                         val minutes = getIntExtra(EXTRA_SESSION_MINUTES, 0)
                         binding.tvMinutes.update(minutes)
+
                         val minutesLeft = navArgs.duration - minutes
                         binding.sessionInfo.text = resources
                             .getQuantityString(R.plurals.minutes_left, minutesLeft, minutesLeft)
@@ -146,6 +146,7 @@ class SessionActivity : AppCompatActivity() {
 //                            val minutes = binding.tvMinutes.text.toString().toInt()
                             // todo: hide the pauseOrPlay fab
                             binding.sessionInfo.text = getString(R.string.info_session_ended)
+//                            binding.tvMinutes.update(1) //fixme
                         }
                     }
 
@@ -154,10 +155,10 @@ class SessionActivity : AppCompatActivity() {
 
                         if (timerRunning) {
                             binding.fabPauseOrContinue.setImageResource(R.drawable.ic_pause)
-                            binding.fabStopSession.visibility = View.INVISIBLE
+                            binding.fabCloseSession.visibility = View.INVISIBLE
                         } else {
                             binding.fabPauseOrContinue.setImageResource(R.drawable.ic_play)
-                            binding.fabStopSession.visibility = View.VISIBLE
+                            binding.fabCloseSession.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -180,7 +181,7 @@ class SessionActivity : AppCompatActivity() {
             }
             DialogInterface.BUTTON_NEGATIVE -> {
                 dialog.dismiss()
-                sendCommandToService(SessionCommand.STOP)
+                stopService(Intent(this, SessionService::class.java))
                 finish()
             }
         }

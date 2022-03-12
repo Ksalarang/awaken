@@ -64,8 +64,8 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabStopSession"
-        android:src="@drawable/ic_done"
+        android:id="@+id/fabCloseSession"
+        android:src="@drawable/ic_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_edge_small"
