@@ -143,10 +143,9 @@ class SessionActivity : AppCompatActivity() {
 
                         // When the session's ended
                         if (!timerStarted) {
-//                            val minutes = binding.tvMinutes.text.toString().toInt()
                             // todo: hide the pauseOrPlay fab
                             binding.sessionInfo.text = getString(R.string.info_session_ended)
-//                            binding.tvMinutes.update(1) //fixme
+                            binding.tvMinutes.update(1) //fixme
                         }
                     }
 
@@ -170,19 +169,19 @@ class SessionActivity : AppCompatActivity() {
         val dialogClickListener = dialogClickListener()
         return AlertDialog.Builder(this)
             .setMessage(getString(R.string.question_quit_without_saving))
-            .setPositiveButton(getString(R.string.answer_save), dialogClickListener)
-            .setNegativeButton(getString(R.string.answer_quit), dialogClickListener)
+            .setPositiveButton(getString(R.string.answer_quit), dialogClickListener)
+            .setNegativeButton(getString(R.string.answer_cancel), dialogClickListener)
     }
 
     private fun dialogClickListener() = DialogInterface.OnClickListener { dialog, which ->
         when (which) {
             DialogInterface.BUTTON_POSITIVE -> {
-                // todo: save session data
-            }
-            DialogInterface.BUTTON_NEGATIVE -> {
                 dialog.dismiss()
                 stopService(Intent(this, SessionService::class.java))
                 finish()
+            }
+            DialogInterface.BUTTON_NEGATIVE -> {
+                dialog.dismiss()
             }
         }
     }
