@@ -18,6 +18,8 @@ import com.diyartaikenov.app.awaken.ui.viewmodel.PresetViewModelFactory
 import com.diyartaikenov.app.awaken.ui.viewmodel.SessionViewModel
 import com.diyartaikenov.app.awaken.ui.viewmodel.SessionViewModelFactory
 
+private const val MILLIS_IN_SECOND = 1000L
+
 /**
  * A [Fragment] to view the list of [MeditationPreset]s stored in the database.
  * Tap the [FloatingActionButton] to add a new [MeditationPreset]
@@ -42,6 +44,9 @@ class PresetsFragment: Fragment() {
 
     private lateinit var mainActivity: MainActivity
 
+    private var sessionStartTimeStamp: Long = 0
+    private var sessionEndTimeStamp: Long = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,21 +62,20 @@ class PresetsFragment: Fragment() {
         mainActivity = requireActivity() as MainActivity
 
         val adapter = PresetListAdapter(
-            { preset ->
-                // A click listener to open the session fragment
+            { preset -> // Click listener to open the session fragment
+                sessionStartTimeStamp = System.currentTimeMillis() / MILLIS_IN_SECOND
+
                 findNavController().navigate(
                     PresetsFragmentDirections.actionNavPresetsToNavSession(preset.durationInMinutes)
                 )
             },
-            { preset ->
-                // A click listener to edit the preset
+            { preset -> // Click listener to edit the preset
                 mainActivity.setBottomNavigationVisibility(View.GONE)
                 findNavController().navigate(
                     PresetsFragmentDirections.actionNavPresetsToNavAddPreset(preset.id)
                 )
             },
-            { preset ->
-                // A click listener to delete the preset
+            { preset -> // Click listener to delete the preset
                 presetViewModel.deletePreset(preset)
             }
         )
