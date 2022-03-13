@@ -46,7 +46,7 @@
     </plurals>
     <plurals name="session_lasted_minutes">
         <item quantity="one">Meditation lasted %d minute</item>
-        <item quantity="many">Meditation lasted %d minutes</item>
+        <item quantity="other">Meditation lasted %d minutes</item>
     </plurals>
 
     <string name="info_session_ended">Meditation ended</string>
