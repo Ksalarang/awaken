@@ -4,9 +4,9 @@ import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-private const val SECOND_IN_MILLIS = 1000L
+private const val MILLIS_IN_SECOND = 1000L
 private const val SECONDS_MAX_VALUE = 59
-private const val MINUTE_IN_SECONDS = 60
+private const val SECONDS_IN_MINUTE = 60
 
 class SessionTimer(private var initialMinutes: Int) {
 
@@ -20,7 +20,7 @@ class SessionTimer(private var initialMinutes: Int) {
     val timerStarted: LiveData<Boolean> = _timerStarted
     val timerRunning: LiveData<Boolean> = _timerRunning
 
-    private var secondsTotal = initialMinutes * MINUTE_IN_SECONDS
+    private var secondsTotal = initialMinutes * SECONDS_IN_MINUTE
     private var timer = createTimer()
 
     private var minutesTemp = 0
@@ -43,8 +43,8 @@ class SessionTimer(private var initialMinutes: Int) {
 
     fun resume() {
         // recalculate total amount of seconds left after a pause
-        val secondsPassed = minutesTemp * MINUTE_IN_SECONDS + secondsTemp
-        secondsTotal = initialMinutes * MINUTE_IN_SECONDS - secondsPassed
+        val secondsPassed = minutesTemp * SECONDS_IN_MINUTE + secondsTemp
+        secondsTotal = initialMinutes * SECONDS_IN_MINUTE - secondsPassed
 
         timer = createTimer().start()
         _timerRunning.value = true
@@ -58,9 +58,9 @@ class SessionTimer(private var initialMinutes: Int) {
 
     private fun createTimer(): CountDownTimer {
         return object: CountDownTimer(
-            secondsTotal * SECOND_IN_MILLIS,
+            secondsTotal * MILLIS_IN_SECOND,
 //            2000,//fixme
-            SECOND_IN_MILLIS
+            MILLIS_IN_SECOND
         ) {
 
             override fun onTick(millisUntilFinished: Long) {
