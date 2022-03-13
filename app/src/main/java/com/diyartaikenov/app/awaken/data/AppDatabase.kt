@@ -17,7 +17,10 @@ import com.diyartaikenov.app.awaken.model.MeditationSession
     exportSchema = false
 )
 abstract class AppDatabase: RoomDatabase() {
+
     abstract fun meditationPresetDao(): MeditationPresetDao
+
+    abstract fun meditationSessionDao(): MeditationSessionDao
 
     companion object {
         @Volatile

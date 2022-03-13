@@ -6,11 +6,13 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.diyartaikenov.app.awaken.data.MeditationPresetDao
 import com.diyartaikenov.app.awaken.model.MeditationPreset
+import com.diyartaikenov.app.awaken.ui.presets.PresetsFragment
+import com.diyartaikenov.app.awaken.ui.presets.AddPresetFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
- * Shared [ViewModel] to provide data to the [PresetsFragment]
+ * Shared [ViewModel] to provide data to [PresetsFragment] and [AddPresetFragment]
  * and allow for interaction with the [MeditationPresetDao]
  */
 class PresetViewModel(private val presetDao: MeditationPresetDao): ViewModel() {

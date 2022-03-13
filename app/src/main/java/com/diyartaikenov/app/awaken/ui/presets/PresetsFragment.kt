@@ -15,6 +15,8 @@ import com.diyartaikenov.app.awaken.model.MeditationPreset
 import com.diyartaikenov.app.awaken.ui.adapter.PresetListAdapter
 import com.diyartaikenov.app.awaken.ui.viewmodel.PresetViewModel
 import com.diyartaikenov.app.awaken.ui.viewmodel.PresetViewModelFactory
+import com.diyartaikenov.app.awaken.ui.viewmodel.SessionViewModel
+import com.diyartaikenov.app.awaken.ui.viewmodel.SessionViewModelFactory
 
 /**
  * A [Fragment] to view the list of [MeditationPreset]s stored in the database.
@@ -23,9 +25,15 @@ import com.diyartaikenov.app.awaken.ui.viewmodel.PresetViewModelFactory
  */
 class PresetsFragment: Fragment() {
 
-    private val viewModel: PresetViewModel by activityViewModels {
+    private val presetViewModel: PresetViewModel by activityViewModels {
         PresetViewModelFactory(
             (activity?.application as BaseApplication).database.meditationPresetDao()
+        )
+    }
+
+    private val sessionViewModel: SessionViewModel by activityViewModels {
+        SessionViewModelFactory(
+            (activity?.application as BaseApplication).database.meditationSessionDao()
         )
     }
 
@@ -64,11 +72,11 @@ class PresetsFragment: Fragment() {
             },
             { preset ->
                 // A click listener to delete the preset
-                viewModel.deletePreset(preset)
+                presetViewModel.deletePreset(preset)
             }
         )
 
-        viewModel.presets.observe(viewLifecycleOwner) { presets ->
+        presetViewModel.presets.observe(viewLifecycleOwner) { presets ->
             adapter.submitList(presets)
         }
 
