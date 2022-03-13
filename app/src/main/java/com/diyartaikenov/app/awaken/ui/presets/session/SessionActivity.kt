@@ -13,19 +13,21 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.navigation.navArgs
 import com.diyartaikenov.app.awaken.R
 import com.diyartaikenov.app.awaken.databinding.ActivitySessionBinding
+import com.diyartaikenov.app.awaken.ui.presets.*
 import com.diyartaikenov.app.awaken.utils.Utils
 
 class SessionActivity : AppCompatActivity() {
-
-    private val navArgs: SessionActivityArgs by navArgs()
 
     private lateinit var binding: ActivitySessionBinding
     private lateinit var broadcastManager: LocalBroadcastManager
     private lateinit var sessionStateReceiver: BroadcastReceiver
     private lateinit var alertDialogBuilder: AlertDialog.Builder
+
+    private var initialDuration = 0
+    // end timestamp of a session which is sent back to the Presets fragment
+    private var endTimestamp = 0L
 
     private var timerStarted = false
     private var timerRunning = false
@@ -52,10 +54,13 @@ class SessionActivity : AppCompatActivity() {
 
         alertDialogBuilder = buildAlertDialogBuilder()
 
+        // Initialize initialDuration with a value received
+        // from the fragment that launched this activity.
+        initialDuration = intent.getIntExtra(EXTRA_INITIAL_DURATION, 0)
+        // Send the initialDuration value to the Session service
         val startServiceIntent = Intent(this, SessionService::class.java)
             .putExtra(EXTRA_SESSION_COMMAND, SessionCommand.START)
-            .putExtra(EXTRA_DURATION_MINUTES, navArgs.duration)
-
+            .putExtra(EXTRA_DURATION_MINUTES, initialDuration)
         startSessionService(startServiceIntent)
 
         binding.apply {
@@ -68,9 +73,10 @@ class SessionActivity : AppCompatActivity() {
             }
 
             fabCloseSession.setOnClickListener {
+                stopService(Intent(this@SessionActivity, SessionService::class.java))
+
                 if (getMinutes() < 1) {
-                    stopService(Intent(this@SessionActivity, SessionService::class.java))
-                    finish() //fixme: should navigate back with arguments
+                    finish()
                 } else {
                     onSessionEnd()
                 }
@@ -86,9 +92,13 @@ class SessionActivity : AppCompatActivity() {
 
             buttonSaveOrQuit.setOnClickListener {
                 if (checkboxDontSave.isChecked) {
-                    finish() // fixme: should navigate back with arguments
+                    finish()
                 } else {
-                    // todo: save session data
+                    val sessionData = Intent()
+                        .putExtra(EXTRA_ACTUAL_DURATION, getMinutes())
+                        .putExtra(EXTRA_END_TIMESTAMP, endTimestamp)
+                    setResult(RESULT_CODE_OK, sessionData)
+                    finish()
                 }
             }
         }
@@ -148,7 +158,7 @@ class SessionActivity : AppCompatActivity() {
                         val minutes = getIntExtra(EXTRA_SESSION_MINUTES, 0)
                         binding.tvMinutes.update(minutes)
 
-                        val minutesLeft = navArgs.duration - minutes
+                        val minutesLeft = initialDuration - minutes
                         binding.sessionInfo.text = resources
                             .getQuantityString(R.plurals.minutes_left, minutesLeft, minutesLeft)
                     }
@@ -162,17 +172,20 @@ class SessionActivity : AppCompatActivity() {
 
                         if (!timerStarted) {
                             onSessionEnd()
-//                            binding.tvMinutes.update(1) //fixme
                         }
                     }
 
                     TIMER_RUNNING_RESULT_CODE -> {
                         timerRunning = getBooleanExtra(EXTRA_SESSION_RUNNING, false)
 
-                        if (timerRunning) {
+                        if (timerRunning) { // When the timer is resumed
                             binding.fabPauseOrResume.setImageResource(R.drawable.ic_pause)
                             binding.fabCloseSession.visibility = View.INVISIBLE
-                        } else if (timerStarted) {
+                        } else if (timerStarted) { // When the timer is paused
+                            // Save endTimestamp in case the user wants to finish the session
+                            // before it ends
+                            endTimestamp = System.currentTimeMillis() / MILLIS_IN_SECOND
+
                             binding.fabPauseOrResume.setImageResource(R.drawable.ic_play)
                             binding.fabCloseSession.visibility = View.VISIBLE
                         }
@@ -184,6 +197,7 @@ class SessionActivity : AppCompatActivity() {
 
     private fun onSessionEnd() {
         binding.apply {
+            endTimestamp = System.currentTimeMillis() / MILLIS_IN_SECOND
             val minutes = getMinutes()
             sessionInfo.text = resources
                 .getQuantityString(R.plurals.session_lasted_minutes, minutes, minutes)
@@ -209,7 +223,7 @@ class SessionActivity : AppCompatActivity() {
             DialogInterface.BUTTON_POSITIVE -> {
                 dialog.dismiss()
                 stopService(Intent(this, SessionService::class.java))
-                finish() // fixme: should navigate back with arguments
+                finish()
             }
 
             DialogInterface.BUTTON_NEGATIVE -> {

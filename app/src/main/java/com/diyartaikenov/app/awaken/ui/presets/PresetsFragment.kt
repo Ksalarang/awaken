@@ -1,5 +1,6 @@
 package com.diyartaikenov.app.awaken.ui.presets
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,18 +14,26 @@ import com.diyartaikenov.app.awaken.R
 import com.diyartaikenov.app.awaken.databinding.FragmentPresetsBinding
 import com.diyartaikenov.app.awaken.model.MeditationPreset
 import com.diyartaikenov.app.awaken.ui.adapter.PresetListAdapter
+import com.diyartaikenov.app.awaken.ui.presets.session.SessionActivity
 import com.diyartaikenov.app.awaken.ui.viewmodel.PresetViewModel
 import com.diyartaikenov.app.awaken.ui.viewmodel.PresetViewModelFactory
 import com.diyartaikenov.app.awaken.ui.viewmodel.SessionViewModel
 import com.diyartaikenov.app.awaken.ui.viewmodel.SessionViewModelFactory
 
-private const val MILLIS_IN_SECOND = 1000L
+const val EXTRA_INITIAL_DURATION = "INITIAL_DURATION"
+const val EXTRA_ACTUAL_DURATION = "ACTUAL_DURATION"
+const val EXTRA_END_TIMESTAMP = "END_TIMESTAMP"
+const val MILLIS_IN_SECOND = 1000L
+const val RESULT_CODE_OK = 20
+
+private const val REQUEST_CODE = 10
 
 /**
  * A [Fragment] to view the list of [MeditationPreset]s stored in the database.
  * Tap the [FloatingActionButton] to add a new [MeditationPreset]
  * Tap any preset item or the 'Meditate' button to launch a new session
  */
+@Suppress("DEPRECATION")
 class PresetsFragment: Fragment() {
 
     private val presetViewModel: PresetViewModel by activityViewModels {
@@ -44,8 +53,8 @@ class PresetsFragment: Fragment() {
 
     private lateinit var mainActivity: MainActivity
 
-    private var sessionStartTimeStamp: Long = 0
-    private var sessionEndTimeStamp: Long = 0
+    private var sessionStartTimestamp: Long = 0
+    private var sessionEndTimestamp: Long = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,12 +71,13 @@ class PresetsFragment: Fragment() {
         mainActivity = requireActivity() as MainActivity
 
         val adapter = PresetListAdapter(
-            { preset -> // Click listener to open the session fragment
-                sessionStartTimeStamp = System.currentTimeMillis() / MILLIS_IN_SECOND
+            { preset -> // Click listener to open the Session activity
+                sessionStartTimestamp = System.currentTimeMillis() / MILLIS_IN_SECOND
 
-                findNavController().navigate(
-                    PresetsFragmentDirections.actionNavPresetsToNavSession(preset.durationInMinutes)
-                )
+                val startSessionActivity = Intent(context, SessionActivity::class.java)
+                    .putExtra(EXTRA_INITIAL_DURATION, preset.durationInMinutes)
+
+                startActivityForResult(startSessionActivity, REQUEST_CODE)
             },
             { preset -> // Click listener to edit the preset
                 mainActivity.setBottomNavigationVisibility(View.GONE)
@@ -96,6 +106,21 @@ class PresetsFragment: Fragment() {
     override fun onResume() {
         super.onResume()
         mainActivity.setBottomNavigationVisibility(View.VISIBLE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == RESULT_CODE_OK && data != null) {
+            val sessionDuration = data.getIntExtra(EXTRA_ACTUAL_DURATION, 0)
+            sessionEndTimestamp = data.getLongExtra(EXTRA_END_TIMESTAMP, 0)
+
+            sessionViewModel.addSession(
+                sessionDuration,
+                sessionStartTimestamp,
+                sessionEndTimestamp
+            )
+        }
     }
 
     override fun onDestroyView() {

@@ -59,7 +59,6 @@ class SessionTimer(private var initialMinutes: Int) {
     private fun createTimer(): CountDownTimer {
         return object: CountDownTimer(
             secondsTotal * MILLIS_IN_SECOND,
-//            2000,//fixme
             MILLIS_IN_SECOND
         ) {
 
