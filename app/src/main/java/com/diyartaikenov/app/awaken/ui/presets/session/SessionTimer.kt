@@ -8,7 +8,7 @@ private const val MILLIS_IN_SECOND = 1000L
 private const val SECONDS_MAX_VALUE = 59
 private const val SECONDS_IN_MINUTE = 60
 
-class SessionTimer(private var initialMinutes: Int) {
+class SessionTimer(private val initialMinutes: Int) {
 
     private var _minutes = MutableLiveData(0)
     private var _seconds = MutableLiveData(0)
@@ -22,8 +22,13 @@ class SessionTimer(private var initialMinutes: Int) {
     val timerRunning: LiveData<Boolean> = _timerRunning
     val timerIsUp: LiveData<Boolean> = _timerIsUp
 
-    private var secondsTotal = initialMinutes * SECONDS_IN_MINUTE
-    private var timer = createTimer()
+    private var secondsTotal: Int
+    private var timer: CountDownTimer
+
+    init {
+        secondsTotal = initialMinutes * SECONDS_IN_MINUTE
+        timer = createTimer(secondsTotal)
+    }
 
     private var minutesTemp = 0
     private var secondsTemp = 0
@@ -48,15 +53,15 @@ class SessionTimer(private var initialMinutes: Int) {
         val secondsPassed = minutesTemp * SECONDS_IN_MINUTE + secondsTemp
         secondsTotal = initialMinutes * SECONDS_IN_MINUTE - secondsPassed
 
-        timer = createTimer().start()
+        timer = createTimer(secondsTotal).start()
         _timerRunning.value = true
     }
 
     fun cancel() { timer.cancel() }
 
-    private fun createTimer(): CountDownTimer {
+    private fun createTimer(secondsInFuture: Int): CountDownTimer {
         return object: CountDownTimer(
-            secondsTotal * MILLIS_IN_SECOND,
+            secondsInFuture * MILLIS_IN_SECOND,
             MILLIS_IN_SECOND
         ) {
 
