@@ -52,11 +52,7 @@ class SessionTimer(private var initialMinutes: Int) {
         _timerRunning.value = true
     }
 
-    fun stop() {
-        timer.cancel()
-        _timerStarted.value = false
-        _timerRunning.value = false
-    }
+    fun cancel() { timer.cancel() }
 
     private fun createTimer(): CountDownTimer {
         return object: CountDownTimer(

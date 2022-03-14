@@ -36,8 +36,12 @@ class SessionService: LifecycleService() {
                 SessionCommand.PAUSE -> sessionTimer.pause()
             }
         }
-
         return START_NOT_STICKY
+    }
+
+    override fun onDestroy() {
+        sessionTimer.cancel()
+        super.onDestroy()
     }
 
     private fun observeSessionState() {
