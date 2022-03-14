@@ -24,9 +24,7 @@ class SessionService: LifecycleService() {
             when(getSerializableExtra(EXTRA_SESSION_COMMAND)) {
 
                 SessionCommand.START -> {
-                    sessionTimer = SessionTimer(
-                        getIntExtra(EXTRA_DURATION_MINUTES, 0)
-                    )
+                    sessionTimer = SessionTimer(getIntExtra(EXTRA_DURATION_MINUTES, 0))
                     observeSessionState()
 
                     sessionTimer.start()
@@ -36,11 +34,6 @@ class SessionService: LifecycleService() {
                 SessionCommand.RESUME -> sessionTimer.resume()
 
                 SessionCommand.PAUSE -> sessionTimer.pause()
-
-                SessionCommand.STOP -> {
-                    sessionTimer.stop()
-                    stopSelf()
-                }
             }
         }
 
@@ -66,9 +59,7 @@ class SessionService: LifecycleService() {
                 .putExtra(EXTRA_SESSION_STARTED, started)
             broadcastManager.sendBroadcast(timerStateStarted)
 
-            if (!started) {
-                stopSelf()
-            }
+            if (!started) { stopSelf() }
         }
         sessionTimer.timerRunning.observe(this) { running ->
             val timerStateRunning = Intent(ACTION_SESSION_STATE_CHANGED)
