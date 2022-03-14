@@ -26,7 +26,6 @@ class SessionActivity : AppCompatActivity() {
     private lateinit var alertDialogBuilder: AlertDialog.Builder
 
     private var initialDuration = 0
-    // end timestamp of a session which is sent back to the Presets fragment
     private var endTimestamp = 0L
 
     private var timerStarted = false
@@ -40,9 +39,7 @@ class SessionActivity : AppCompatActivity() {
         Utils.hideStatusBars(window.decorView)
         supportActionBar?.hide()
 
-        if (Utils.isOreoOrAbove()) {
-            createNotificationChannel()
-        }
+        if (Utils.isOreoOrAbove()) { createNotificationChannel() }
 
         sessionStateReceiver = createBroadCastReceiver()
 
@@ -123,11 +120,8 @@ class SessionActivity : AppCompatActivity() {
     }
 
     private fun startSessionService(serviceIntent: Intent) {
-        if (Utils.isOreoOrAbove()) {
-            startForegroundService(serviceIntent)
-        } else {
-            startService(serviceIntent)
-        }
+        if (Utils.isOreoOrAbove()) { startForegroundService(serviceIntent) }
+        else { startService(serviceIntent) }
     }
 
     private fun startServiceWithCommand(command: SessionCommand) {
@@ -170,24 +164,29 @@ class SessionActivity : AppCompatActivity() {
                     TIMER_STARTED_RESULT_CODE -> {
                         timerStarted = getBooleanExtra(EXTRA_SESSION_STARTED, false)
 
-                        if (!timerStarted) {
-                            onSessionEnd()
-                        }
+                        if (!timerStarted) { onSessionEnd() }
                     }
 
                     TIMER_RUNNING_RESULT_CODE -> {
                         timerRunning = getBooleanExtra(EXTRA_SESSION_RUNNING, false)
 
-                        if (timerRunning) { // When the timer is resumed
-                            binding.fabPauseOrResume.setImageResource(R.drawable.ic_pause)
-                            binding.fabCloseSession.visibility = View.INVISIBLE
-                        } else if (timerStarted) { // When the timer is paused
-                            // Save endTimestamp in case the user wants to finish the session
-                            // before it ends
-                            endTimestamp = System.currentTimeMillis() / MILLIS_IN_SECOND
+                        binding.apply {
+                            if (timerRunning) { // When the timer is resumed
+                                fabPauseOrResume.setImageResource(R.drawable.ic_pause)
+                                fabCloseSession.visibility = View.INVISIBLE
+                            } else if (timerStarted) { // When the timer is paused
 
-                            binding.fabPauseOrResume.setImageResource(R.drawable.ic_play)
-                            binding.fabCloseSession.visibility = View.VISIBLE
+                                // Save endTimestamp in case the user wants to finish the session
+                                // before it ends
+                                endTimestamp = System.currentTimeMillis() / MILLIS_IN_SECOND
+
+                                fabPauseOrResume.setImageResource(R.drawable.ic_play)
+
+                                if (getMinutes() > 0) {
+                                    fabCloseSession.setImageResource(R.drawable.ic_done)
+                                }
+                                fabCloseSession.visibility = View.VISIBLE
+                            }
                         }
                     }
                 }
@@ -226,9 +225,7 @@ class SessionActivity : AppCompatActivity() {
                 finish()
             }
 
-            DialogInterface.BUTTON_NEGATIVE -> {
-                dialog.dismiss()
-            }
+            DialogInterface.BUTTON_NEGATIVE -> dialog.dismiss()
         }
     }
 
@@ -237,11 +234,8 @@ class SessionActivity : AppCompatActivity() {
      */
     @SuppressLint("SetTextI18n")
     private fun TextView.update(value: Int) {
-        if (value < 10) {
-            this.text = "0$value"
-        } else {
-            this.text = value.toString()
-        }
+        if (value < 10) { this.text = "0$value" }
+        else { this.text = value.toString() }
     }
 
     private fun getMinutes() = binding.tvMinutes.text.toString().toInt()
