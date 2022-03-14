@@ -22,5 +22,5 @@ const val SESSION_CHANNEL_ID = "SESSION_CHANNEL_ID"
 const val SESSION_NOTIFICATION_ID = 10
 
 enum class SessionCommand {
-    START, PAUSE, RESUME, STOP
+    START, PAUSE, RESUME
 }
