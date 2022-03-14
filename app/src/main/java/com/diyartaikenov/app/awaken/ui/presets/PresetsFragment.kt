@@ -26,7 +26,7 @@ const val EXTRA_END_TIMESTAMP = "END_TIMESTAMP"
 const val MILLIS_IN_SECOND = 1000L
 const val RESULT_CODE_OK = 20
 
-private const val REQUEST_CODE = 10
+private const val REQUEST_CODE = 1
 
 /**
  * A [Fragment] to view the list of [MeditationPreset]s stored in the database.
