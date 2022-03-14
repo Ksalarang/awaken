@@ -14,11 +14,13 @@ class SessionTimer(private var initialMinutes: Int) {
     private var _seconds = MutableLiveData(0)
     private var _timerStarted = MutableLiveData(false)
     private var _timerRunning = MutableLiveData(false)
+    private var _timerIsUp = MutableLiveData(true)
 
     val minutes: LiveData<Int> = _minutes
     val seconds: LiveData<Int> = _seconds
     val timerStarted: LiveData<Boolean> = _timerStarted
     val timerRunning: LiveData<Boolean> = _timerRunning
+    val timerIsUp: LiveData<Boolean> = _timerIsUp
 
     private var secondsTotal = initialMinutes * SECONDS_IN_MINUTE
     private var timer = createTimer()
@@ -67,6 +69,7 @@ class SessionTimer(private var initialMinutes: Int) {
             }
 
             override fun onFinish() {
+                _timerIsUp.value = false
                 _timerStarted.value = false
                 _timerRunning.value = false
             }
