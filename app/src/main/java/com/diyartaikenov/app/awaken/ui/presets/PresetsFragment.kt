@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+
 import com.diyartaikenov.app.awaken.BaseApplication
 import com.diyartaikenov.app.awaken.MainActivity
 import com.diyartaikenov.app.awaken.R

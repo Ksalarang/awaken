@@ -6,13 +6,14 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.*
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+
 import com.diyartaikenov.app.awaken.R
 import com.diyartaikenov.app.awaken.databinding.ActivitySessionBinding
 import com.diyartaikenov.app.awaken.ui.presets.*

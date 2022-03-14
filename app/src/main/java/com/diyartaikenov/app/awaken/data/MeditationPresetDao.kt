@@ -1,8 +1,10 @@
 package com.diyartaikenov.app.awaken.data
 
 import androidx.room.*
-import com.diyartaikenov.app.awaken.model.MeditationPreset
 import kotlinx.coroutines.flow.Flow
+
+import com.diyartaikenov.app.awaken.model.MeditationPreset
+
 
 /**
  * Data Access Object for database interaction with [MeditationPreset] entity.

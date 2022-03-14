@@ -7,6 +7,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+
 import com.diyartaikenov.app.awaken.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 

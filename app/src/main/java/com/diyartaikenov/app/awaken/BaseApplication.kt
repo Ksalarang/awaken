@@ -1,6 +1,7 @@
 package com.diyartaikenov.app.awaken
 
 import android.app.Application
+
 import com.diyartaikenov.app.awaken.data.AppDatabase
 
 /**
