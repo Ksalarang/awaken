@@ -13,8 +13,8 @@ data class MeditationSession(
     val id: Long = 0,
     @ColumnInfo(name = "duration_in_minutes")
     val durationInMinutes: Int,
-    @ColumnInfo(name = "start_time_stamp")
-    val startTimeStamp: Long,
-    @ColumnInfo(name = "end_time_stamp")
-    val endTimeStamp: Long
+    @ColumnInfo(name = "start_timestamp")
+    val startTimestamp: Long,
+    @ColumnInfo(name = "end_timestamp")
+    val endTimestamp: Long
 )

@@ -19,11 +19,11 @@ class SessionViewModel(private val sessionDao: MeditationSessionDao): ViewModel(
 
     val sessions: LiveData<List<MeditationSession>> = sessionDao.getSessions().asLiveData()
 
-    fun addSession(durationInMinutes: Int, startTimeStamp: Long, endTimeStamp: Long) {
+    fun addSession(durationInMinutes: Int, startTimestamp: Long, endTimestamp: Long) {
         val session = MeditationSession(
             durationInMinutes = durationInMinutes,
-            startTimeStamp = startTimeStamp,
-            endTimeStamp = endTimeStamp
+            startTimestamp = startTimestamp,
+            endTimestamp = endTimestamp
         )
         viewModelScope.launch(Dispatchers.IO) {
             sessionDao.insert(session)

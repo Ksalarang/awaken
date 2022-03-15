@@ -14,7 +14,7 @@ import com.diyartaikenov.app.awaken.model.MeditationSession
  */
 @Database(
     entities = [MeditationPreset::class, MeditationSession::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class AppDatabase: RoomDatabase() {
