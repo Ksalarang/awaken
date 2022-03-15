@@ -32,7 +32,7 @@ private const val REQUEST_CODE = 1
 /**
  * A [Fragment] to view the list of [MeditationPreset]s stored in the database.
  * Tap the [FloatingActionButton] to add a new [MeditationPreset]
- * Tap any preset item or the 'Meditate' button to launch a new session
+ * Tap the 'Meditate' button to launch a new session
  */
 @Suppress("DEPRECATION")
 class PresetsFragment: Fragment() {

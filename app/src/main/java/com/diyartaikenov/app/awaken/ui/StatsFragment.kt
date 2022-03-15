@@ -10,10 +10,10 @@ import com.diyartaikenov.app.awaken.BaseApplication
 import com.diyartaikenov.app.awaken.databinding.FragmentStatsBinding
 import com.diyartaikenov.app.awaken.ui.viewmodel.SessionViewModel
 import com.diyartaikenov.app.awaken.ui.viewmodel.SessionViewModelFactory
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.ValueFormatter
 
 class StatsFragment: Fragment() {
 
@@ -26,7 +26,7 @@ class StatsFragment: Fragment() {
     private var _binding: FragmentStatsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var chart: LineChart
+    private lateinit var chart: BarChart
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,24 +40,59 @@ class StatsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        chart = binding.lineChart
+        chart = binding.barChart
 
-        val lineDataSet = LineDataSet(entryList(), "")
+        val barDataSet = BarDataSet(entries(), "")
 
-        chart.data = LineData(lineDataSet)
-        chart.setVisibleXRangeMaximum(7F)
-        chart.invalidate()
+        chart.apply {
+            data = BarData(barDataSet)
+            data.setDrawValues(false)
+
+            description.isEnabled = false
+            legend.isEnabled = false
+
+            xAxis.apply {
+                position = XAxis.XAxisPosition.BOTTOM
+                setDrawGridLines(false)
+                granularity = 1F
+                valueFormatter = DayAxisValueFormatter()
+            }
+
+            axisLeft.setDrawAxisLine(false)
+
+            axisRight.apply {
+                setDrawLabels(false)
+                setDrawAxisLine(false)
+            }
+
+            invalidate()
+        }
     }
 
-    private fun entryList(): List<Entry> {
+    class DayAxisValueFormatter: ValueFormatter() {
+        override fun getFormattedValue(value: Float): String {
+            return when(value) {
+                1F -> "Mon"
+                2F -> "Tue"
+                3F -> "Wen"
+                4F -> "Thu"
+                5F -> "Fri"
+                6F -> "Sat"
+                7F -> "Sun"
+                else -> "n/a"
+            }
+        }
+    }
+
+    private fun entries(): List<BarEntry> {
         return listOf(
-            Entry(1F, 5F),
-            Entry(2F, 10F),
-            Entry(3F, 15F),
-            Entry(4F, 20F),
-            Entry(5F, 10F),
-            Entry(6F, 30F),
-            Entry(7F, 10F),
+            BarEntry(1F, 5F),
+            BarEntry(2F, 10F),
+            BarEntry(3F, 15F),
+            BarEntry(4F, 20F),
+            BarEntry(5F, 10F),
+            BarEntry(6F, 30F),
+            BarEntry(7F, 10F),
         )
     }
 }
