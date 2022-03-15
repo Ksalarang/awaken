@@ -1,6 +1,8 @@
 package com.diyartaikenov.app.awaken.ui.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,6 +16,8 @@ import com.diyartaikenov.app.awaken.ui.presets.PresetsFragment
  * and allow for interaction with the [MeditationSessionDao]
  */
 class SessionViewModel(private val sessionDao: MeditationSessionDao): ViewModel() {
+
+    val sessions: LiveData<List<MeditationSession>> = sessionDao.getSessions().asLiveData()
 
     fun addSession(durationInMinutes: Int, startTimeStamp: Long, endTimeStamp: Long) {
         val session = MeditationSession(
