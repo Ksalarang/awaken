@@ -3,8 +3,11 @@ package com.diyartaikenov.app.awaken.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.diyartaikenov.app.awaken.data.Converters
 
 @Entity(tableName = "sessions")
+@TypeConverters(Converters::class)
 data class MeditationSession(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
