@@ -57,4 +57,7 @@
     <string name="answer_cancel">Cancel</string>
     <string name="checkbox_dont_save">Don\'t save</string>
     <string name="button_quit">Quit</string>
+
+    <!-- Stats fragment -->
+    <string name="bar_chart_label">Meditation time</string>
 </resources>

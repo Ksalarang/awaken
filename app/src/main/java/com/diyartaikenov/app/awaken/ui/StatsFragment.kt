@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 
 import com.diyartaikenov.app.awaken.BaseApplication
+import com.diyartaikenov.app.awaken.R
 import com.diyartaikenov.app.awaken.databinding.FragmentStatsBinding
+import com.diyartaikenov.app.awaken.model.MeditationSession
 import com.diyartaikenov.app.awaken.ui.viewmodel.SessionViewModel
 import com.diyartaikenov.app.awaken.ui.viewmodel.SessionViewModelFactory
 
@@ -30,6 +33,8 @@ class StatsFragment: Fragment() {
 
     private lateinit var chart: BarChart
 
+    private lateinit var sessions: List<MeditationSession>
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,6 +46,10 @@ class StatsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        sessionViewModel.sessions.observe(viewLifecycleOwner) {
+            this.sessions = it
+        }
 
         chart = binding.barChart
 
@@ -73,13 +82,13 @@ class StatsFragment: Fragment() {
 
     private fun entries(): List<BarEntry> {
         return listOf(
-            BarEntry(1F, 5F),
+            BarEntry(1F, 6F),
             BarEntry(2F, 10F),
             BarEntry(3F, 15F),
-            BarEntry(4F, 20F),
+            BarEntry(4F, 19F),
             BarEntry(5F, 10F),
             BarEntry(6F, 30F),
-            BarEntry(7F, 10F),
+            BarEntry(7F, 14F),
         )
     }
 }
