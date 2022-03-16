@@ -5,7 +5,7 @@ import java.util.*
 
 private const val MILLIS_IN_SECOND = 1000L
 
-class Converters {
+class Converter {
     @TypeConverter
     fun timestampToDate(value: Long) = Date(value * MILLIS_IN_SECOND)
 

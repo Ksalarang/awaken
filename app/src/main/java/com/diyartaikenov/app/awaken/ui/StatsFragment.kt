@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+
 import com.diyartaikenov.app.awaken.BaseApplication
 import com.diyartaikenov.app.awaken.databinding.FragmentStatsBinding
 import com.diyartaikenov.app.awaken.ui.viewmodel.SessionViewModel
 import com.diyartaikenov.app.awaken.ui.viewmodel.SessionViewModelFactory
+
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
@@ -69,21 +71,6 @@ class StatsFragment: Fragment() {
         }
     }
 
-    class DayAxisValueFormatter: ValueFormatter() {
-        override fun getFormattedValue(value: Float): String {
-            return when(value) {
-                1F -> "Mon"
-                2F -> "Tue"
-                3F -> "Wen"
-                4F -> "Thu"
-                5F -> "Fri"
-                6F -> "Sat"
-                7F -> "Sun"
-                else -> "n/a"
-            }
-        }
-    }
-
     private fun entries(): List<BarEntry> {
         return listOf(
             BarEntry(1F, 5F),
@@ -94,5 +81,20 @@ class StatsFragment: Fragment() {
             BarEntry(6F, 30F),
             BarEntry(7F, 10F),
         )
+    }
+}
+
+class DayAxisValueFormatter: ValueFormatter() {
+    override fun getFormattedValue(value: Float): String {
+        return when(value) {
+            1F -> "Mon"
+            2F -> "Tue"
+            3F -> "Wen"
+            4F -> "Thu"
+            5F -> "Fri"
+            6F -> "Sat"
+            7F -> "Sun"
+            else -> "n/a"
+        }
     }
 }

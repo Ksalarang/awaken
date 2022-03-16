@@ -6,10 +6,10 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import java.util.*
 
-import com.diyartaikenov.app.awaken.data.Converters
+import com.diyartaikenov.app.awaken.data.Converter
 
 @Entity(tableName = "sessions")
-@TypeConverters(Converters::class)
+@TypeConverters(Converter::class)
 data class MeditationSession(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,

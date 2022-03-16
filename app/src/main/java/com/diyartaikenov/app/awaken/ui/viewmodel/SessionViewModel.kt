@@ -1,17 +1,14 @@
 package com.diyartaikenov.app.awaken.ui.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
-import com.diyartaikenov.app.awaken.data.Converters
+import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
+import com.diyartaikenov.app.awaken.data.Converter
 import com.diyartaikenov.app.awaken.data.MeditationSessionDao
 import com.diyartaikenov.app.awaken.model.MeditationSession
 import com.diyartaikenov.app.awaken.ui.presets.PresetsFragment
-import java.util.*
 
 /**
  * Shared [ViewModel] to provide data to [PresetsFragment] and [StatsFragment]
@@ -19,18 +16,32 @@ import java.util.*
  */
 class SessionViewModel(private val sessionDao: MeditationSessionDao): ViewModel() {
 
-    private val converters = Converters()
-
     val sessions: LiveData<List<MeditationSession>> = sessionDao.getSessions().asLiveData()
+
+    private val converter = Converter()
 
     fun addSession(durationInMinutes: Int, startTimestamp: Long, endTimestamp: Long) {
         val session = MeditationSession(
             durationInMinutes = durationInMinutes,
-            startTimestamp = converters.timestampToDate(startTimestamp),
-            endTimestamp = converters.timestampToDate(endTimestamp)
+            startTimestamp = converter.timestampToDate(startTimestamp),
+            endTimestamp = converter.timestampToDate(endTimestamp)
         )
         viewModelScope.launch(Dispatchers.IO) {
             sessionDao.insert(session)
+        }
+    }
+}
+
+class SessionViewModelFactory(
+    private val sessionDao: MeditationSessionDao
+): ViewModelProvider.Factory {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(SessionViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return SessionViewModel(sessionDao) as T
+        } else {
+            throw IllegalArgumentException("Unknown ViewModel class")
         }
     }
 }
