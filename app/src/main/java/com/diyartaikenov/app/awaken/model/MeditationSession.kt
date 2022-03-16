@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import java.util.*
+
 import com.diyartaikenov.app.awaken.data.Converters
 
 @Entity(tableName = "sessions")
@@ -14,7 +16,9 @@ data class MeditationSession(
     @ColumnInfo(name = "duration_in_minutes")
     val durationInMinutes: Int,
     @ColumnInfo(name = "start_timestamp")
-    val startTimestamp: Long,
+    /** The start date of a session that is stored as a number of seconds since the Unix epoch. */
+    val startTimestamp: Date,
     @ColumnInfo(name = "end_timestamp")
-    val endTimestamp: Long
+    /** The end date of a session that is stored as a number of seconds since the Unix epoch. */
+    val endTimestamp: Date
 )
