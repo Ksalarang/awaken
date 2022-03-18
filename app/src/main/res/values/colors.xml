@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
     <color name="gainsboro">#ffdcdcdc</color>
+    <color name="grey_dark">#ff606060</color>
 </resources>
