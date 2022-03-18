@@ -12,15 +12,13 @@ class SessionTimer(private val initialMinutes: Int) {
 
     private var _minutes = MutableLiveData(0)
     private var _seconds = MutableLiveData(0)
-    private var _timerStarted = MutableLiveData(false)
-    private var _timerRunning = MutableLiveData(false)
-    private var _timerIsUp = MutableLiveData(false)
+    private var _timerState = MutableLiveData(TimerState.NOT_STARTED)
+
 
     val minutes: LiveData<Int> = _minutes
     val seconds: LiveData<Int> = _seconds
-    val timerStarted: LiveData<Boolean> = _timerStarted
-    val timerRunning: LiveData<Boolean> = _timerRunning
-    val timerIsUp: LiveData<Boolean> = _timerIsUp
+    val timerState: LiveData<TimerState> = _timerState
+
 
     private var secondsTotal: Int
     private var timer: CountDownTimer
@@ -35,8 +33,7 @@ class SessionTimer(private val initialMinutes: Int) {
 
     fun start() {
         timer.start()
-        _timerStarted.value = true
-        _timerRunning.value = true
+        _timerState.value = TimerState.RUNNING
     }
 
     fun pause() {
@@ -45,7 +42,7 @@ class SessionTimer(private val initialMinutes: Int) {
         secondsTemp = _seconds.value!!
 
         timer.cancel()
-        _timerRunning.value = false
+        _timerState.value = TimerState.PAUSED
     }
 
     fun resume() {
@@ -54,7 +51,7 @@ class SessionTimer(private val initialMinutes: Int) {
         secondsTotal = initialMinutes * SECONDS_IN_MINUTE - secondsPassed
 
         timer = createTimer(secondsTotal).start()
-        _timerRunning.value = true
+        _timerState.value = TimerState.RUNNING
     }
 
     fun cancel() { timer.cancel() }
@@ -62,7 +59,6 @@ class SessionTimer(private val initialMinutes: Int) {
     private fun createTimer(secondsInFuture: Int): CountDownTimer {
         return object: CountDownTimer(
             secondsInFuture * MILLIS_IN_SECOND,
-//            2000,
             MILLIS_IN_SECOND
         ) {
 
@@ -71,9 +67,7 @@ class SessionTimer(private val initialMinutes: Int) {
             }
 
             override fun onFinish() {
-                _timerIsUp.value = true
-                _timerStarted.value = false
-                _timerRunning.value = false
+                _timerState.value = TimerState.FINISHED
             }
         }
     }

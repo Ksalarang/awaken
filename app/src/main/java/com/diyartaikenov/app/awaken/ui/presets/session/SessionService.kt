@@ -14,6 +14,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.diyartaikenov.app.awaken.R
 import com.diyartaikenov.app.awaken.utils.Utils
 
+private const val VIBRATION_DURATION = 1000L
+
 class SessionService: LifecycleService() {
 
     private lateinit var sessionTimer: SessionTimer
@@ -67,24 +69,16 @@ class SessionService: LifecycleService() {
             broadcastManager.sendBroadcast(secondsChanged)
         }
 
-        sessionTimer.timerIsUp.observe(this) { timerIsUp ->
-            if (timerIsUp) { vibratePhone() }
-        }
+        sessionTimer.timerState.observe(this) { state ->
+            val timerState = Intent(ACTION_SESSION_STATE_CHANGED)
+                .putExtra(EXTRA_RESULT_CODE, TIMER_STATE_RESULT_CODE)
+                .putExtra(EXTRA_SESSION_STATE, state)
+            broadcastManager.sendBroadcast(timerState)
 
-        sessionTimer.timerStarted.observe(this) { started ->
-            val timerStateStarted = Intent(ACTION_SESSION_STATE_CHANGED)
-                .putExtra(EXTRA_RESULT_CODE, TIMER_STARTED_RESULT_CODE)
-                .putExtra(EXTRA_SESSION_STARTED, started)
-            broadcastManager.sendBroadcast(timerStateStarted)
-
-            if (!started) { stopSelf() }
-        }
-
-        sessionTimer.timerRunning.observe(this) { running ->
-            val timerStateRunning = Intent(ACTION_SESSION_STATE_CHANGED)
-                .putExtra(EXTRA_RESULT_CODE, TIMER_RUNNING_RESULT_CODE)
-                .putExtra(EXTRA_SESSION_RUNNING, running)
-            broadcastManager.sendBroadcast(timerStateRunning)
+            if (state == TimerState.FINISHED) {
+                vibratePhone()
+                stopSelf()
+            }
         }
     }
 
@@ -97,11 +91,9 @@ class SessionService: LifecycleService() {
     }
 
     private fun vibratePhone() {
-        val vibrationDuration = 700L
-
         if (Utils.isOreoOrAbove()) {
             val vibrationEffect = VibrationEffect
-                .createOneShot(vibrationDuration, VibrationEffect.DEFAULT_AMPLITUDE)
+                .createOneShot(VIBRATION_DURATION, VibrationEffect.DEFAULT_AMPLITUDE)
 
             if (Utils.isSOrAbove()) {
                 val combinedVibration = CombinedVibration.createParallel(vibrationEffect)
@@ -114,7 +106,7 @@ class SessionService: LifecycleService() {
             }
         } else {
             (getSystemService(Context.VIBRATOR_SERVICE) as Vibrator)
-                .vibrate(vibrationDuration)
+                .vibrate(VIBRATION_DURATION)
         }
     }
 }

@@ -7,9 +7,11 @@ import android.app.NotificationManager
 import android.content.*
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -17,55 +19,63 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.diyartaikenov.app.awaken.R
 import com.diyartaikenov.app.awaken.databinding.ActivitySessionBinding
 import com.diyartaikenov.app.awaken.ui.presets.*
+import com.diyartaikenov.app.awaken.ui.viewmodel.SessionActivityViewModel
+import com.diyartaikenov.app.awaken.ui.viewmodel.SessionActivityViewModelFactory
 import com.diyartaikenov.app.awaken.utils.Utils
 
 class SessionActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySessionBinding
-    private lateinit var broadcastManager: LocalBroadcastManager
-    private lateinit var sessionStateReceiver: BroadcastReceiver
+    private lateinit var viewModel: SessionActivityViewModel
+    private lateinit var bind: ActivitySessionBinding
     private lateinit var alertDialogBuilder: AlertDialog.Builder
 
     private var initialDuration = 0
     private var endTimestamp = 0L
 
-    private var timerStarted = false
-    private var timerRunning = false
+    private var timerState = TimerState.NOT_STARTED
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySessionBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        bind = ActivitySessionBinding.inflate(layoutInflater)
+        setContentView(bind.root)
 
         Utils.hideStatusBars(window.decorView)
         supportActionBar?.hide()
 
         if (Utils.isOreoOrAbove()) { createNotificationChannel() }
 
-        sessionStateReceiver = createBroadCastReceiver()
-
-        broadcastManager = LocalBroadcastManager.getInstance(this)
-        broadcastManager.registerReceiver(
-            sessionStateReceiver,
-            IntentFilter(ACTION_SESSION_STATE_CHANGED)
-        )
-
         alertDialogBuilder = buildAlertDialogBuilder()
+
+        // Initialize the viewModel
+        val vm: SessionActivityViewModel by viewModels {
+            SessionActivityViewModelFactory(applicationContext)
+        }
+        viewModel = vm
+
+        observeViewModel()
 
         // Initialize initialDuration with a value received
         // from the fragment that launched this activity.
         initialDuration = intent.getIntExtra(EXTRA_INITIAL_DURATION, 0)
-        // Send the initialDuration value to the Session service
-        val startServiceIntent = Intent(this, SessionService::class.java)
-            .putExtra(EXTRA_SESSION_COMMAND, SessionCommand.START)
-            .putExtra(EXTRA_DURATION_MINUTES, initialDuration)
-        startSessionService(startServiceIntent)
 
-        binding.apply {
+        // Launch the service only if it is not already running
+        timerState = viewModel.timerState.value!!
+        if (timerState == TimerState.NOT_STARTED) {
+            val startServiceIntent = Intent(this, SessionService::class.java)
+                .putExtra(EXTRA_SESSION_COMMAND, SessionCommand.START)
+                .putExtra(EXTRA_DURATION_MINUTES, initialDuration)
+            startSessionService(startServiceIntent)
+        }
+
+        bind.apply {
             fabPauseOrResume.setOnClickListener {
-                if (timerRunning) {
+                if (timerState == TimerState.RUNNING) {
+                    // Save endTimestamp in case the user wants to finish the session
+                    // before it ends
+                    endTimestamp = System.currentTimeMillis() / MILLIS_IN_SECOND
+
                     startServiceWithCommand(SessionCommand.PAUSE)
-                } else if (timerStarted && !timerRunning){
+                } else if (timerState == TimerState.PAUSED){
                     startServiceWithCommand(SessionCommand.RESUME)
                 }
             }
@@ -102,13 +112,8 @@ class SessionActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        broadcastManager.unregisterReceiver(sessionStateReceiver)
-        super.onDestroy()
-    }
-
     override fun onBackPressed() {
-        if (timerRunning) {
+        if (timerState == TimerState.RUNNING) {
             startServiceWithCommand(SessionCommand.PAUSE)
         } else {
             if (getMinutes() < 1) {
@@ -144,60 +149,57 @@ class SessionActivity : AppCompatActivity() {
             .createNotificationChannel(channel)
     }
 
-    private fun createBroadCastReceiver() = object: BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            intent?.apply {
-                when(getIntExtra(EXTRA_RESULT_CODE, 0)) {
+    private fun observeViewModel() {
 
-                    MINUTES_RESULT_CODE -> {
-                        val minutes = getIntExtra(EXTRA_SESSION_MINUTES, 0)
-                        binding.tvMinutes.update(minutes)
+        viewModel.minutes.observe(this) { minutes ->
+            bind.tvMinutes.update(minutes)
 
-                        val minutesLeft = initialDuration - minutes
-                        binding.sessionInfo.text = resources
-                            .getQuantityString(R.plurals.minutes_left, minutesLeft, minutesLeft)
-                    }
+            val minutesLeft = initialDuration - minutes
+            bind.sessionInfo.text = resources
+                .getQuantityString(R.plurals.minutes_left, minutesLeft, minutesLeft)
+        }
 
-                    SECONDS_RESULT_CODE -> {
-                        binding.tvSeconds.update(getIntExtra(EXTRA_SESSION_SECONDS, 0))
-                    }
+        viewModel.seconds.observe(this) { seconds ->
+            bind.tvSeconds.update(seconds)
+        }
 
-                    TIMER_STARTED_RESULT_CODE -> {
-                        timerStarted = getBooleanExtra(EXTRA_SESSION_STARTED, false)
+        viewModel.timerState.observe(this) { timerState ->
+            this.timerState = timerState
 
-                        if (!timerStarted) { onSessionEnd() }
-                    }
+            @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
+            when (timerState) {
 
-                    TIMER_RUNNING_RESULT_CODE -> {
-                        timerRunning = getBooleanExtra(EXTRA_SESSION_RUNNING, false)
+                TimerState.NOT_STARTED -> {} // Don't do anything
 
-                        binding.apply {
-                            if (timerRunning) { // When the timer is resumed
-                                fabPauseOrResume.setImageResource(R.drawable.ic_pause)
-                                fabCloseSession.visibility = View.INVISIBLE
-                            } else if (timerStarted) { // When the timer is paused
+                TimerState.RUNNING -> {
+                    bind.fabPauseOrResume.setImageResource(R.drawable.ic_pause)
+                    bind.fabCloseSession.visibility = View.INVISIBLE
+                }
 
-                                // Save endTimestamp in case the user wants to finish the session
-                                // before it ends
-                                endTimestamp = System.currentTimeMillis() / MILLIS_IN_SECOND
+                TimerState.PAUSED -> {
+                    bind.apply {
+                        fabPauseOrResume.setImageResource(R.drawable.ic_play)
 
-                                fabPauseOrResume.setImageResource(R.drawable.ic_play)
-
-                                if (getMinutes() > 0) {
-                                    fabCloseSession.setImageResource(R.drawable.ic_done)
-                                }
-                                fabCloseSession.visibility = View.VISIBLE
-                            }
+                        if (getMinutes() > 0) {
+                            fabCloseSession.setImageResource(R.drawable.ic_done)
                         }
+                        fabCloseSession.visibility = View.VISIBLE
                     }
+                }
+
+                TimerState.FINISHED -> {
+                    // Save endTimestamp in case the user wants to finish the session
+                    // before it ends
+                    endTimestamp = System.currentTimeMillis() / MILLIS_IN_SECOND
+
+                    onSessionEnd()
                 }
             }
         }
     }
 
     private fun onSessionEnd() {
-        binding.apply {
-            endTimestamp = System.currentTimeMillis() / MILLIS_IN_SECOND
+        bind.apply {
             val minutes = getMinutes()
             sessionInfo.text = resources
                 .getQuantityString(R.plurals.session_lasted_minutes, minutes, minutes)
@@ -226,7 +228,9 @@ class SessionActivity : AppCompatActivity() {
                 finish()
             }
 
-            DialogInterface.BUTTON_NEGATIVE -> dialog.dismiss()
+            DialogInterface.BUTTON_NEGATIVE -> {
+                dialog.dismiss()
+            }
         }
     }
 
@@ -239,5 +243,5 @@ class SessionActivity : AppCompatActivity() {
         else { this.text = value.toString() }
     }
 
-    private fun getMinutes() = binding.tvMinutes.text.toString().toInt()
+    private fun getMinutes() = bind.tvMinutes.text.toString().toInt()
 }
