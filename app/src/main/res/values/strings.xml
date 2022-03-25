@@ -13,6 +13,9 @@
     <string name="text_fragment_settings">Settings are gonna be here, someday…</string>
     <string name="dummy_content">Meditating</string>
 
+    <!-- Presets fragment -->
+    <string name="meditation_name_with_ordinal">Meditation %d</string>
+
     <!-- Add preset fragment -->
     <string name="preset_name">Meditation Name</string>
     <string name="name_input_error_message">This field cannot be empty</string>

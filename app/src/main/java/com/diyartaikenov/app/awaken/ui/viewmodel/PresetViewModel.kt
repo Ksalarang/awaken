@@ -15,6 +15,8 @@ import com.diyartaikenov.app.awaken.ui.presets.AddPresetFragment
  */
 class PresetViewModel(private val presetDao: MeditationPresetDao): ViewModel() {
 
+    var shouldAddDefaultPresets = true
+
     val presets: LiveData<List<MeditationPreset>> =
         presetDao.getPresets().asLiveData()
 
@@ -23,6 +25,7 @@ class PresetViewModel(private val presetDao: MeditationPresetDao): ViewModel() {
     }
 
     fun addPreset(name: String, duration: Int) {
+        shouldAddDefaultPresets = false
         val preset = MeditationPreset(name = name, durationInMinutes = duration)
         viewModelScope.launch(Dispatchers.IO) {
             presetDao.insert(preset)
@@ -41,6 +44,7 @@ class PresetViewModel(private val presetDao: MeditationPresetDao): ViewModel() {
     }
 
     fun deletePreset(preset: MeditationPreset) {
+        shouldAddDefaultPresets = false
         viewModelScope.launch {
             presetDao.delete(preset)
         }

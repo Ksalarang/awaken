@@ -2,6 +2,7 @@ package com.diyartaikenov.app.awaken.ui.presets
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -94,6 +95,7 @@ class PresetsFragment: Fragment() {
 
         presetViewModel.presets.observe(viewLifecycleOwner) { presets ->
             adapter.submitList(presets)
+            addDefaultPresetsIfEmpty(presets.isEmpty())
         }
 
         binding.apply {
@@ -134,5 +136,16 @@ class PresetsFragment: Fragment() {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    private fun addDefaultPresetsIfEmpty(isEmpty: Boolean) {
+        if (presetViewModel.shouldAddDefaultPresets && isEmpty) {
+            presetViewModel.apply {
+                addPreset(getString(R.string.meditation_name_with_ordinal, 1), 10)
+                addPreset(getString(R.string.meditation_name_with_ordinal, 2), 15)
+                addPreset(getString(R.string.meditation_name_with_ordinal, 3), 20)
+            }
+            presetViewModel.shouldAddDefaultPresets = false
+        }
     }
 }
